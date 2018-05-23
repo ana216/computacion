@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<p:layout style="min-width:400px;min-height:200px;">
@@ -27,9 +27,9 @@
 		<p:tab title="Crear cliente">
 			<h:panelGrid columns="2" cellpadding="10">
 				<p:outputLabel value="Id del cliente" />
-				<p:inputText value="" />
+				<p:inputText value="" binding="#{manejarClientes.txtIdentificaciones}"/>
 				<p:outputLabel value="Tipo de documento" />
-				<h:selectOneMenu id="txt3" value="#{selectorView.text3}"
+				<h:selectOneMenu id="txt3" binding="#{manejarClientes.somTipoDocumento}" value="#{selectorView.text3}"
 					required="true" label="Text 3">
 					<f:selectItem itemLabel="Seleccionar uno" itemValue=""
 						noSelectionOption="true" />
@@ -38,15 +38,15 @@
 					<f:selectItem itemLabel="T. de identidad" itemValue="3" />
 				</h:selectOneMenu>
 				<p:outputLabel value="Nombre" />
-				<p:inputText value="" />
+				<p:inputText value="" binding="#{manejarClientes.txtNombre}" />
 				<p:outputLabel value="Dirección" />
-				<p:inputText value="" />
+				<p:inputText value="" binding="#{manejarClientes.txtDireccion}"  />
 				<p:outputLabel for="phone" value="Teléfono" />
-				<p:inputMask id="phone" value="#{maskView.phone}"
+				<p:inputMask id="phone" binding="#{manejarClientes.txtTelefono}" value="#{maskView.phone}"
 					mask="(999) 999-9999" />
 
-				<p:outputLabel value="Email" type="email" />
-				<p:inputText value="" />
+				<p:outputLabel value="Email" type="email"/>
+				<p:inputText value="" binding="#{manejarClientes.txtMail}" />
 			</h:panelGrid>
 			<p:growl id="growl" life="2000" />
 
@@ -54,7 +54,7 @@
 				<p:growl id="message" showDetail="true" />
 
 				<p:commandButton value="Agregar Cliente"
-					actionListener="#{dialogView.destroyWorld}" update="message">
+					actionListener="#{manejarClientes.action_crear()}" update="message">
 					<p:confirm header="Confirmation"
 						message="¿Estás seguro que quieres agregar el cliente?"
 						icon="ui-icon-alert" />
@@ -72,7 +72,7 @@
 
 
 
-			<p:dataTable var="car" value="#{dtPaginatorView.cars}"
+			<p:dataTable var="cliente" value="#{dtPaginatorView.cars}"
 				editable="true" rows="10" paginator="true"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15"
