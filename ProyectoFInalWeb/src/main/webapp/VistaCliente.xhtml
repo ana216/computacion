@@ -29,21 +29,23 @@
 				<p:outputLabel value="Id del cliente" />
 				<p:inputText value="" binding="#{manejarClientes.txtIdentificaciones}"/>
 				<p:outputLabel value="Tipo de documento" />
-				<h:selectOneMenu id="txt3" binding="#{manejarClientes.somTipoDocumento}" value="#{selectorView.text3}"
+				<p:selectOneMenu id="txt3" binding="#{manejarClientes.somTipoDocumento}" value="#{selectorView.text3}"
 					required="true" label="Text 3">
-					<f:selectItem itemLabel="Seleccionar uno" itemValue=""
+					<f:selectItem itemLabel="Seleccionar uno" itemValue="-1"
 						noSelectionOption="true" />
-					<f:selectItem itemLabel="Cédula" itemValue="1" />
-					<f:selectItem itemLabel="Pasaporte" itemValue="2" />
-					<f:selectItem itemLabel="T. de identidad" itemValue="3" />
-				</h:selectOneMenu>
+					<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" />
+					
+				</p:selectOneMenu>
 				<p:outputLabel value="Nombre" />
 				<p:inputText value="" binding="#{manejarClientes.txtNombre}" />
 				<p:outputLabel value="Dirección" />
 				<p:inputText value="" binding="#{manejarClientes.txtDireccion}"  />
+				
 				<p:outputLabel for="phone" value="Teléfono" />
 				<p:inputMask id="phone" binding="#{manejarClientes.txtTelefono}" value="#{maskView.phone}"
 					mask="(999) 999-9999" />
+
+				
 
 				<p:outputLabel value="Email" type="email"/>
 				<p:inputText value="" binding="#{manejarClientes.txtMail}" />

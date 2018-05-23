@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.inputmask.InputMask;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 
@@ -22,13 +23,13 @@ import co.edu.icesi.buisiness.IBusinessDelegate;
 @ViewScoped
 public class ManejarClientes {
 
-	@ManagedProperty(value="#{businessDelegate}")
+	@ManagedProperty(value="#{buisinessDelegate}")
 	private IBusinessDelegate businessDelegate;
 	
 	private InputText txtIdentificaciones;
 	private InputText txtNombre;
 	private InputText txtDireccion;
-	private InputText txtTelefono;
+	private InputMask txtTelefono;
 	private InputText txtMail;
 	
 	private SelectOneMenu somTipoDocumento;
@@ -192,10 +193,10 @@ public class ManejarClientes {
 	public void setTxtDireccion(InputText txtDireccion) {
 		this.txtDireccion = txtDireccion;
 	}
-	public InputText getTxtTelefono() {
+	public InputMask getTxtTelefono() {
 		return txtTelefono;
 	}
-	public void setTxtTelefono(InputText txtTelefono) {
+	public void setTxtTelefono(InputMask txtTelefono) {
 		this.txtTelefono = txtTelefono;
 	}
 	public InputText getTxtMail() {
@@ -267,6 +268,7 @@ public class ManejarClientes {
 				}
 				
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 				
 			}
 		}
