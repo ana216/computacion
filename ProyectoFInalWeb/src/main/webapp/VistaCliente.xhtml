@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:p="http://primefaces.org/ui">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<p:layout style="min-width:400px;min-height:200px;">
@@ -27,27 +27,29 @@
 		<p:tab title="Crear cliente">
 			<h:panelGrid columns="2" cellpadding="10">
 				<p:outputLabel value="Id del cliente" />
-				<p:inputText value="" binding="#{manejarClientes.txtIdentificaciones}"/>
+				<p:inputText value=""
+					binding="#{manejarClientes.txtIdentificaciones}" />
 				<p:outputLabel value="Tipo de documento" />
-				<p:selectOneMenu id="txt3" binding="#{manejarClientes.somTipoDocumento}" value="#{selectorView.text3}"
-					required="true" label="Text 3">
+				<p:selectOneMenu id="txt3"
+					binding="#{manejarClientes.somTipoDocumento}" required="true"
+					label="Text 3">
 					<f:selectItem itemLabel="Seleccionar uno" itemValue="-1"
 						noSelectionOption="true" />
 					<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" />
-					
+
 				</p:selectOneMenu>
 				<p:outputLabel value="Nombre" />
 				<p:inputText value="" binding="#{manejarClientes.txtNombre}" />
 				<p:outputLabel value="Dirección" />
-				<p:inputText value="" binding="#{manejarClientes.txtDireccion}"  />
-				
+				<p:inputText value="" binding="#{manejarClientes.txtDireccion}" />
+
 				<p:outputLabel for="phone" value="Teléfono" />
-				<p:inputMask id="phone" binding="#{manejarClientes.txtTelefono}" value="#{maskView.phone}"
-					mask="(999) 999-9999" />
+				<p:inputMask id="phone" binding="#{manejarClientes.txtTelefono}"
+					value="#{maskView.phone}" mask="(999) 999-9999" />
 
-				
 
-				<p:outputLabel value="Email" type="email"/>
+
+				<p:outputLabel value="Email" type="email" />
 				<p:inputText value="" binding="#{manejarClientes.txtMail}" />
 			</h:panelGrid>
 			<p:growl id="growl" life="2000" />
@@ -72,62 +74,67 @@
 		</p:tab>
 		<p:tab title="Gestionar cliente">
 
+			<p:panel>
 
+				<p:dataTable widgetVar="tblCliente" var="cliente" rows="10"
+					paginator="true" value="#{manejarClientes.lstClientes}"
+					emptyMessage="No hay clientes con ese criterio"
+					filteredValue="#{manejarClientes.filteredClientes}"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
 
-			<p:dataTable var="cliente" value="#{dtPaginatorView.cars}"
-				editable="true" rows="10" paginator="true"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15"
-				filteredValue="#{dtFilterView.filteredCars}">
-
-				<p:column headerText="Id" filterBy="#{car.id}">
-
-					<h:outputText value="Ana" />
-				</p:column>
-
-				<p:column headerText="Tipo documento" filterBy="#{car.id}">
-					<h:outputText value="Ana" />
-				</p:column>
-
-				<p:column headerText="Nombre" filterBy="#{car.id}">
-					<h:outputText value="#{car.brand}" />
-				</p:column>
-
-				<p:column headerText="Direccion" filterBy="#{car.id}">
-					<h:outputText value="#{car.color}" />
-				</p:column>
-				<p:column headerText="Telefono" filterBy="#{car.id}">
-					<f:facet name="filter">
-						<p:selectOneMenu onchange="PF('carsTable').filter()">
-							<f:selectItem itemLabel="Select One" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItems value="#{dtFilterView.brands}" />
-						</p:selectOneMenu>
-					</f:facet>
-					<h:outputText value="#{car.color}" />
-				</p:column>
-				<p:column headerText="Email" filterBy="#{car.id}"
-					filterMatchMode="exact">
-					<h:outputText value="#{car.color}" />
-				</p:column>
-				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Botón de editar" />
+						<p:outputPanel>
+							<h:outputText value="Search all fields:" />
+							<p:inputText id="globalFilter"
+								onkeyup="PF('tblCliente').filter()" style="width:150px"
+								placeholder="Enter keyword" />
+						</p:outputPanel>
 					</f:facet>
-					<h:commandButton action="#{myBean.editMyData}">
-						<h:outputText value="#{myDataItem.id}" />
-					</h:commandButton>
-				</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Botón de borrar" />
-					</f:facet>
-					<h:commandButton action="#{myBean.editMyData}">
-						<h:outputText value="#{myDataItem.id}" />
-					</h:commandButton>
-				</p:column>
-			</p:dataTable>
+					<p:column filterBy="#{cliente.cliId}" headerText="Id"
+						footerText="contains" filterMatchMode="contains">
+						<h:outputText value="#{cliente.cliId}" />
+					</p:column>
+
+					<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
+						filterMatchMode="contains">
+						<h:outputText value="#{cliente.cliNombre}" />
+					</p:column>
+
+					<p:column headerText="Dirección" filterBy="#{cliente.cliDireccion}"
+						filterMatchMode="contains">
+						<h:outputText value="#{cliente.cliDireccion}" />
+					</p:column>
+
+					<p:column headerText="Telefono" filterBy="#{cliente.cliTelefono}"
+						filterMatchMode="contains">
+						<h:outputText value="#{cliente.cliTelefono}" />
+					</p:column>
+
+					<p:column headerText="E-Mail" filterBy="#{cliente.cliMail}"
+						filterMatchMode="contains">
+						<h:outputText value="#{cliente.cliMail}" />
+					</p:column>
+					<!-- 				<p:column> -->
+					<!-- 					<f:facet name="header"> -->
+					<!-- 						<h:outputText value="Botón de editar" /> -->
+					<!-- 					</f:facet> -->
+					<!-- 					<h:commandButton action="#{myBean.editMyData}"> -->
+					<!-- 						<h:outputText value="#{myDataItem.id}" /> -->
+					<!-- 					</h:commandButton> -->
+					<!-- 				</p:column> -->
+
+					<!-- 				<p:column> -->
+					<!-- 					<f:facet name="header"> -->
+					<!-- 						<h:outputText value="Botón de borrar" /> -->
+					<!-- 					</f:facet> -->
+					<!-- 					<h:commandButton action="#{myBean.editMyData}"> -->
+					<!-- 						<h:outputText value="#{myDataItem.id}" /> -->
+					<!-- 					</h:commandButton> -->
+					<!-- 				</p:column> -->
+				</p:dataTable>
+			</p:panel>
 		</p:tab>
 
 	</p:tabView>

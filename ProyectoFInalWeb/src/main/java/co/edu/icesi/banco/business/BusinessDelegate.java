@@ -1,8 +1,10 @@
-package co.edu.icesi.buisiness;
+package co.edu.icesi.banco.business;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import co.edu.icesi.banco.logic.IClienteLogic;
 import co.edu.icesi.banco.logic.ICuentasLogic;
@@ -11,6 +13,9 @@ import co.edu.icesi.banco.modelo.Clientes;
 import co.edu.icesi.banco.modelo.Cuentas;
 import co.edu.icesi.banco.modelo.TiposDocumentos;
 
+
+@Service
+@Scope("singleton")
 public class BusinessDelegate implements IBusinessDelegate {
 
 	

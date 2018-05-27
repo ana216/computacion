@@ -15,15 +15,15 @@ import org.primefaces.component.inputmask.InputMask;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 
+import co.edu.icesi.banco.business.IBusinessDelegate;
 import co.edu.icesi.banco.modelo.Clientes;
 import co.edu.icesi.banco.modelo.TiposDocumentos;
-import co.edu.icesi.buisiness.IBusinessDelegate;
 
 @ManagedBean
 @ViewScoped
 public class ManejarClientes {
 
-	@ManagedProperty(value="#{buisinessDelegate}")
+	@ManagedProperty(value="#{businessDelegate}")
 	private IBusinessDelegate businessDelegate;
 	
 	private InputText txtIdentificaciones;
@@ -31,6 +31,8 @@ public class ManejarClientes {
 	private InputText txtDireccion;
 	private InputMask txtTelefono;
 	private InputText txtMail;
+	private List<Clientes> filteredClientes;
+	
 	
 	private SelectOneMenu somTipoDocumento;
 	private List<SelectItem> lstTiposDocumentosItem;
@@ -278,6 +280,13 @@ public class ManejarClientes {
 	}
 	public void setLstTiposDocumentosItem(List<SelectItem> lstTiposDocumentosItem) {
 		this.lstTiposDocumentosItem = lstTiposDocumentosItem;
+	}
+	public List<Clientes> getFilteredClientes() {
+		return filteredClientes;
+	}
+
+	public void setFilteredClientes(List<Clientes> filteredClientes) {
+		this.filteredClientes = filteredClientes;
 	}
 	
 }

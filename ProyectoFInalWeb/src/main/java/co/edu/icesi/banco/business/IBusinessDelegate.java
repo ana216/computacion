@@ -1,4 +1,4 @@
-package co.edu.icesi.buisiness;
+package co.edu.icesi.banco.business;
 
 import java.util.List;
 
