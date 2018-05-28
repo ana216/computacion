@@ -52,15 +52,15 @@
 
 				<h:panelGrid columns="5">
 					<p:commandButton icon="ui-icon-check"
-						binding="#{manejarClientes.btnCrear}" disabled="false"
-						id="btnCrear" action="#{manejarClientes.action_crear}"
+						binding="#{cuentaView.btnCrear}" disabled="false"
+						id="btnCrear" action="#{cuentaView.action_crear}"
 						value="Crear" update="frmCuenta, growl"
-						oncomplete="PF('tblCliente').filter()" />
+						oncomplete="PF('tblCuenta').filter()" />
 					<p:commandButton disabled="true"
-						binding="#{manejarClientes.btnModificar}" id="btnModificar"
+						binding="#{cuentaView.btnModificar}" id="btnModificar"
 						value="Modificar" update="frmCuenta, growl"
 						oncomplete="PF('tblCliente').filter()"
-						action="#{manejarClientes.action_modificar}" />
+						action="#{cuentaView.action_modificar}" />
 					<p:commandButton disabled="true"
 						binding="#{manejarClientes.btnEliminar}" id="btnBorrar"
 						value="Inactivar" update="frmCuenta, growl"

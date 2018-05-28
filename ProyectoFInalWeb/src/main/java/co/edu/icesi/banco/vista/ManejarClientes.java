@@ -69,6 +69,7 @@ public class ManejarClientes {
 			// Se guarda el cliente una vez se llenen los datos
 			businessDelegate.saveClientes(cliente);
 			lstClientes = null;
+			lstClientesHistoricos = null;
 			action_limpiar();
 			FacesContext.getCurrentInstance().addMessage("",
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Se creó el cliente satisfactoriamente", ""));
@@ -94,6 +95,7 @@ public class ManejarClientes {
 				btnModificar.setDisabled(true);
 				btnEliminar.setDisabled(true);
 				btnActivar.setDisabled(true);
+				action_limpiar();
 
 			} if(cliente.getCliHabilitado().trim().equalsIgnoreCase("N")){
 				
@@ -106,6 +108,10 @@ public class ManejarClientes {
 				txtDireccion.setValue(cliente.getCliDireccion());
 				txtMail.setValue(cliente.getCliMail());
 				somTipoDocumento.setValue(cliente.getTiposDocumentos().getTdocCodigo());
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "EL cliente existe pero está inactivado", ""));
+
+				
 			}
 				else {
 			
@@ -120,9 +126,17 @@ public class ManejarClientes {
 				txtDireccion.setValue(cliente.getCliDireccion());
 				txtMail.setValue(cliente.getCliMail());
 				somTipoDocumento.setValue(cliente.getTiposDocumentos().getTdocCodigo());
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "EL cliente existe y está activo", ""));
+
+				
 			}
 
 		} catch (Exception e) {
+			
+			FacesContext.getCurrentInstance().addMessage("",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+
 
 		}
 	}
@@ -151,6 +165,7 @@ public class ManejarClientes {
 			// Se guarda el cliente una vez se llenen los datos
 			businessDelegate.updateClientes(cliente);
 			lstClientes = null;
+			lstClientesHistoricos = null;
 			action_limpiar();
 			FacesContext.getCurrentInstance().addMessage("",
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Se modificó el cliente satisfactoriamente", ""));
@@ -180,6 +195,7 @@ public class ManejarClientes {
 			// Se elimina el cliente
 			businessDelegate.deleteClientes(cliente);
 			lstClientes = null;
+			lstClientesHistoricos = null;
 			action_limpiar();
 			FacesContext.getCurrentInstance().addMessage("",
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Se eliminó el cliente satisfactoriamente", ""));
@@ -201,9 +217,10 @@ public class ManejarClientes {
 			// Se elimina el cliente
 			businessDelegate.updateClientes(cliente);
 			lstClientes = null;
+			lstClientesHistoricos = null;
 			action_limpiar();
 			FacesContext.getCurrentInstance().addMessage("",
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Se eliminó el cliente satisfactoriamente", ""));
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Se inactivó el cliente satisfactoriamente", ""));
 
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage("",
@@ -372,6 +389,8 @@ public class ManejarClientes {
 			Clientes cliente = businessDelegate.findByIdClientes(id);
 			cliente.setCliHabilitado("S");
 			businessDelegate.updateClientes(cliente);
+			lstClientes = null;
+			lstClientesHistoricos = null;
 			FacesContext.getCurrentInstance().addMessage("",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Se activó el cliente correctamente", ""));
 

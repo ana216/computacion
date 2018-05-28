@@ -8,20 +8,20 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputmask.InputMask;
 import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.panel.Panel;
-import org.primefaces.component.panelgrid.PanelGrid;
+
 import org.primefaces.component.password.Password;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
+
 
 import co.edu.icesi.banco.business.IBusinessDelegate;
 import co.edu.icesi.banco.modelo.Clientes;
 import co.edu.icesi.banco.modelo.Cuentas;
+
 
 @ManagedBean
 @ViewScoped
@@ -142,6 +142,7 @@ public class CuentaView {
 
 				businessDelegate.saveCuenta(cuenta);
 				lstCuentas = null;
+				lstCuentasHistoricas = null;
 				action_limpiar();
 				FacesContext.getCurrentInstance().addMessage("",
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se creó la cuenta satisfactoriamente", ""));
@@ -176,9 +177,31 @@ public class CuentaView {
 			// Se elimina la cuenta
 			businessDelegate.updateCuenta(cuenta);
 			lstCuentas = null;
+			lstCuentasHistoricas = null;
 			action_limpiar();
 			FacesContext.getCurrentInstance().addMessage("",
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Se inactivó la cuenta satisfactoriamente", ""));
+
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage("",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+
+		}
+		return "";
+	}
+	
+	public String action_activar() {
+		try {
+
+			Cuentas cuenta = businessDelegate.findByIdCuenta(txtCueNumero.getValue().toString());
+			cuenta.setCueActiva("S");
+			// Se elimina la cuenta
+			businessDelegate.updateCuenta(cuenta);
+			lstCuentas = null;
+			lstCuentasHistoricas = null;
+			action_limpiar();
+			FacesContext.getCurrentInstance().addMessage("",
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Se activó la cuenta satisfactoriamente", ""));
 
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage("",
@@ -243,6 +266,40 @@ public class CuentaView {
 
 	public void setPanel(Panel panel) {
 		this.panel = panel;
+	}
+	public String action_modificar() {
+
+		try {
+
+			if (txtIdCliente == null || txtIdCliente.getValue() != null
+					|| txtIdCliente.getValue().toString().trim().equals("")) {
+				Clientes cliente = businessDelegate
+						.findByIdClientes(Long.parseLong(txtIdCliente.getValue().toString()));
+				Cuentas cuenta = businessDelegate.findByIdCuenta(txtCueNumero.getValue().toString());
+				
+				cuenta.setCueClave(txtCueClave.getValue().toString());
+				cuenta.setClientes(cliente);
+				cuenta.setCueActiva("S");
+				cuenta.setCueSaldo(new BigDecimal(txtCuentaSaldo.getValue().toString()));
+
+				businessDelegate.updateCuenta(cuenta);
+				lstCuentas = null;
+				lstCuentasHistoricas = null;
+				action_limpiar();
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se modificó la cuenta satisfactoriamente", ""));
+			} else {
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "El id del cliente asociado es inválido", ""));
+
+			}
+
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage("",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage() + "vino de la lógica", ""));
+
+		}
+		return "";
 	}
 
 }
