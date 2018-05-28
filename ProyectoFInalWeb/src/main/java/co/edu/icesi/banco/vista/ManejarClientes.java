@@ -84,16 +84,11 @@ public class ManejarClientes {
 			Long id = Long.parseLong(txtIdentificaciones.getValue().toString());
 			Clientes cliente = businessDelegate.findByIdClientes(id);
 			if(cliente == null) {
-				btnCrear.setDisabled(false);
-				btnModificar.setDisabled(true);
-				btnEliminar.setDisabled(true);
+			
 				
 			}
 			else {
-				btnCrear.setDisabled(true);
-				btnModificar.setDisabled(false);
-				btnEliminar.setDisabled(false);
-				
+						
 				txtNombre.setValue(cliente.getCliNombre());
 				txtTelefono.setValue(cliente.getCliTelefono());
 				txtDireccion.setValue(cliente.getCliDireccion());
