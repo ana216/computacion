@@ -1,0 +1,167 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<h1>cuentas</h1>
+
+
+</h:head>
+
+<h:body>
+	<h:form id="frmCuenta">
+		<p:tabView>
+
+
+			<p:tab title="Crear cuenta">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Id del cliente propietario de la cuenta" />
+					<p:inputText binding="#{cuentaView.txtIdCliente}">
+						<p:ajax listener="#{cuentaView.txtClienteIdentificacionListener}"
+							update="frmCuenta,growl"></p:ajax>
+
+					</p:inputText>
+				</h:panelGrid>
+				<p:panel visible="false" binding="#{cuentaView.panel}">
+					<h:panelGrid columns="2">
+
+						<p:outputLabel value="Número de cuenta" />
+						<p:inputMask binding="#{cuentaView.txtCueNumero}"
+							mask="999-9999-999" />
+						<p:outputLabel value="Saldo" />
+						<p:column>
+							<p:inputNumber value="#{cuentaView.txtCuentaSaldo}"
+								decimalPlaces="15">
+								
+							</p:inputNumber>
+						</p:column>
+
+						<p:outputLabel value="Clave" />
+						<p:password value="#{cuentaView.txtCueClave}" />
+
+					</h:panelGrid>
+				</p:panel>
+				<p:growl id="growl" life="2000" />
+
+
+				<p:growl id="message" showDetail="true" />
+
+
+
+				<h:panelGrid columns="5">
+					<p:commandButton icon="ui-icon-check"
+						binding="#{manejarClientes.btnCrear}" disabled="false"
+						id="btnCrear" action="#{manejarClientes.action_crear}"
+						value="Crear" update="frmCuenta, growl"
+						oncomplete="PF('tblCliente').filter()" />
+					<p:commandButton disabled="true"
+						binding="#{manejarClientes.btnModificar}" id="btnModificar"
+						value="Modificar" update="frmCuenta, growl"
+						oncomplete="PF('tblCliente').filter()"
+						action="#{manejarClientes.action_modificar}" />
+					<p:commandButton disabled="true"
+						binding="#{manejarClientes.btnEliminar}" id="btnBorrar"
+						value="Inactivar" update="frmCuenta, growl"
+						oncomplete="PF('tblCliente').filter()"
+						action="#{manejarClientes.action_inactivar}" />
+					<p:commandButton id="btnLimpiar"
+						binding="#{manejarClientes.btnLimpiar}" value="Limpiar"
+						update="frmCuenta, growl" oncomplete="PF('tblCliente').filter()"
+						action="#{manejarClientes.action_limpiar}" />
+					<p:commandButton id="btnAcivarCliente"
+						binding="#{manejarClientes.btnActivar}" value="Activar"
+						update="frmCuenta, growl" oncomplete="PF('tblCliente').filter()"
+						action="#{manejarClientes.action_activar}" />
+				</h:panelGrid>
+			</p:tab>
+
+			<p:tab title="Gestionar cliente">
+
+				<p:panel>
+
+					<p:dataTable widgetVar="tblCliente2" var="cliente" rows="10"
+						paginator="true" value="#{manejarClientes.lstClientes}"
+						emptyMessage="No hay clientes con ese criterio"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Search all fields:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tblCliente2').filter()" style="width:150px"
+									placeholder="Enter keyword" />
+							</p:outputPanel>
+						</f:facet>
+
+						<p:column filterBy="#{cliente.cliId}" headerText="Id"
+							filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliId}" />
+						</p:column>
+
+						<p:column filterBy="#{cliente.tiposDocumentos.tdocNombre}"
+							headerText="Tipo documento" filterMatchMode="contains">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('tblCliente2').filter()">
+									<f:selectItem itemLabel="Selecciona uno" itemValue="-1"
+										noSelectionOption="true" />
+									<f:selectItems
+										value="#{manejarClientes.lstTiposDocumentosItem}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="Cedula" />
+						</p:column>
+
+						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
+							filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliNombre}" />
+						</p:column>
+
+						<p:column headerText="Dirección"
+							filterBy="#{cliente.cliDireccion}" filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliDireccion}" />
+						</p:column>
+
+						<p:column headerText="Telefono" filterBy="#{cliente.cliTelefono}"
+							filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliTelefono}" />
+						</p:column>
+
+						<p:column headerText="E-Mail" filterBy="#{cliente.cliMail}"
+							filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliMail}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Botón de editar" />
+							</f:facet>
+							<h:commandButton action="#{myBean.editMyData}">
+								<h:outputText value="#{myDataItem.id}" />
+							</h:commandButton>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Botón de borrar" />
+							</f:facet>
+							<h:commandButton action="#{myBean.editMyData}">
+								<h:outputText value="#{myDataItem.id}" />
+							</h:commandButton>
+						</p:column>
+					</p:dataTable>
+
+				</p:panel>
+			</p:tab>
+		</p:tabView>
+
+	</h:form>
+</h:body>
+
+
+
+
+
+
+</html>

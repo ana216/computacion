@@ -26,6 +26,7 @@ public class Clientes implements java.io.Serializable {
 	private String cliTelefono;
 	private String cliMail;
 	private String cliHabilitado;
+	private String ntiposDoc;
 	private Set<Cuentas> cuentases = new HashSet<Cuentas>(0);
 
 	public Clientes() {
@@ -127,5 +128,13 @@ public class Clientes implements java.io.Serializable {
 	public void setCuentases(Set<Cuentas> cuentases) {
 		this.cuentases = cuentases;
 	}
+
+//	public String getNtiposDoc() {
+//		return getTiposDocumentos().getTdocNombre();
+//	}
+//
+//	public void setNtiposDoc(String ntiposDoc) {
+//		this.ntiposDoc = ntiposDoc;
+//	}
 
 }

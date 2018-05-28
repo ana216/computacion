@@ -55,20 +55,6 @@
 
 				<p:growl id="message" showDetail="true" />
 
-				<p:commandButton value="Agregar Cliente" update="frmCliente, growl"
-					oncomplete="PF('tblCliente').filter()"
-					actionListener="#{manejarClientes.action_crear()}">
-					<p:confirm header="Confirmation"
-						message="¿Estás seguro que quieres agregar el cliente?"
-						icon="ui-icon-alert" />
-				</p:commandButton>
-
-				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-					<p:commandButton value="Sí" type="button"
-						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-					<p:commandButton value="No" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-				</p:confirmDialog>
 
 				<h:panelGrid columns="5">
 					<p:commandButton icon="ui-icon-check"
@@ -105,7 +91,6 @@
 					<p:dataTable widgetVar="tblCliente2" var="cliente" rows="10"
 						paginator="true" value="#{manejarClientes.lstClientes}"
 						emptyMessage="No hay clientes con ese criterio"
-						
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15">
 
@@ -119,8 +104,20 @@
 						</f:facet>
 
 						<p:column filterBy="#{cliente.cliId}" headerText="Id"
-							footerText="contains" filterMatchMode="contains">
+							filterMatchMode="contains">
 							<h:outputText value="#{cliente.cliId}" />
+						</p:column>
+
+						<p:column filterBy="#{cliente.tiposDocumentos.tdocNombre}" headerText="Tipo documento"
+							 filterMatchMode="contains">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('tblCliente2').filter()">
+									<f:selectItem itemLabel="Selecciona uno" itemValue="-1"
+										noSelectionOption="true" />
+									<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="Cedula" />
 						</p:column>
 
 						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
@@ -163,10 +160,10 @@
 
 				</p:panel>
 			</p:tab>
-			
+
 			<p:tab title="Consultar historial de clientes">
-			
-			<p:panel>
+
+				<p:panel>
 
 					<p:dataTable widgetVar="tblCliente" var="cliente" rows="10"
 						paginator="true" value="#{manejarClientes.lstClientesHistoricos}"
@@ -186,6 +183,17 @@
 						<p:column filterBy="#{cliente.cliId}" headerText="Id"
 							footerText="contains" filterMatchMode="contains">
 							<h:outputText value="#{cliente.cliId}" />
+						</p:column>
+						<p:column filterBy="#{cliente.tiposDocumentos.tdocNombre}" headerText="Tipo documento"
+							 filterMatchMode="contains">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('tblCliente2').filter()">
+									<f:selectItem itemLabel="Selecciona uno" itemValue="-1"
+										noSelectionOption="true" />
+									<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="Cedula" />
 						</p:column>
 
 						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
@@ -212,13 +220,13 @@
 							<h:outputText value="#{cliente.cliHabilitado}" />
 						</p:column>
 
-<!-- 						<p:column> -->
-<!-- 								<h:outputText value="Activacion" /> -->
-<!-- 						</p:column> -->
-						
-<!-- 						<p:column> -->
-<!-- 								<h:outputText value="Inactivacion" /> -->
-<!-- 						</p:column> -->
+						<!-- 						<p:column> -->
+						<!-- 								<h:outputText value="Activacion" /> -->
+						<!-- 						</p:column> -->
+
+						<!-- 						<p:column> -->
+						<!-- 								<h:outputText value="Inactivacion" /> -->
+						<!-- 						</p:column> -->
 
 
 
@@ -226,13 +234,13 @@
 					</p:dataTable>
 
 				</p:panel>
-			
-			
+
+
 			</p:tab>
-			
+
 
 		</p:tabView>
-		
+
 	</h:form>
 </h:body>
 </html>

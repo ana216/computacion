@@ -76,4 +76,7 @@ public class TiposDocumentos implements java.io.Serializable {
 		this.clienteses = clienteses;
 	}
 
+	
+	
+
 }
