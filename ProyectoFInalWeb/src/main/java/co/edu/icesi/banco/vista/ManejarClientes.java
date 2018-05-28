@@ -43,6 +43,7 @@ public class ManejarClientes {
 	private CommandButton btnActivar;
 
 	private List<Clientes> lstClientes;
+	private List<Clientes> lstClientesHistoricos;
 
 	public String action_crear() {
 
@@ -389,5 +390,21 @@ public class ManejarClientes {
 
 	public void setBtnActivar(CommandButton btnActivar) {
 		this.btnActivar = btnActivar;
+	}
+
+	public List<Clientes> getLstClientesHistoricos() {
+		if (lstClientesHistoricos == null) {
+			try {
+				lstClientesHistoricos = businessDelegate.findAllClientes();
+			} catch (Exception e) {
+
+			}
+		}
+
+		return lstClientesHistoricos;
+	}
+
+	public void setLstClientesHistoricos(List<Clientes> lstClientesHistoricos) {
+		this.lstClientesHistoricos = lstClientesHistoricos;
 	}
 }

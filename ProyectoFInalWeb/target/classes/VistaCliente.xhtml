@@ -83,7 +83,7 @@
 						action="#{manejarClientes.action_modificar}" />
 					<p:commandButton disabled="true"
 						binding="#{manejarClientes.btnEliminar}" id="btnBorrar"
-						value="Borrar" update="frmCliente, growl"
+						value="Inactivar" update="frmCliente, growl"
 						oncomplete="PF('tblCliente').filter()"
 						action="#{manejarClientes.action_inactivar}" />
 					<p:commandButton id="btnLimpiar"
@@ -102,10 +102,10 @@
 
 				<p:panel>
 
-					<p:dataTable widgetVar="tblCliente" var="cliente" rows="10"
+					<p:dataTable widgetVar="tblCliente2" var="cliente" rows="10"
 						paginator="true" value="#{manejarClientes.lstClientes}"
 						emptyMessage="No hay clientes con ese criterio"
-						filteredValue="#{manejarClientes.filteredClientes}"
+						
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15">
 
@@ -113,7 +113,7 @@
 							<p:outputPanel>
 								<h:outputText value="Search all fields:" />
 								<p:inputText id="globalFilter"
-									onkeyup="PF('tblCliente').filter()" style="width:150px"
+									onkeyup="PF('tblCliente2').filter()" style="width:150px"
 									placeholder="Enter keyword" />
 							</p:outputPanel>
 						</f:facet>
@@ -163,8 +163,76 @@
 
 				</p:panel>
 			</p:tab>
+			
+			<p:tab title="Consultar historial de clientes">
+			
+			<p:panel>
+
+					<p:dataTable widgetVar="tblCliente" var="cliente" rows="10"
+						paginator="true" value="#{manejarClientes.lstClientesHistoricos}"
+						emptyMessage="No hay clientes con ese criterio"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Buscar en todos los campos" />
+								<p:inputText id="globalFilter2"
+									onkeyup="PF('tblCliente').filter()" style="width:150px"
+									placeholder="Inserte palabra clave" />
+							</p:outputPanel>
+						</f:facet>
+
+						<p:column filterBy="#{cliente.cliId}" headerText="Id"
+							footerText="contains" filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliId}" />
+						</p:column>
+
+						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
+							filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliNombre}" />
+						</p:column>
+
+						<p:column headerText="Dirección"
+							filterBy="#{cliente.cliDireccion}" filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliDireccion}" />
+						</p:column>
+
+						<p:column headerText="Telefono" filterBy="#{cliente.cliTelefono}"
+							filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliTelefono}" />
+						</p:column>
+
+						<p:column headerText="E-Mail" filterBy="#{cliente.cliMail}"
+							filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliMail}" />
+						</p:column>
+						<p:column headerText="Activo" filterBy="#{cliente.cliHabilitado}"
+							filterMatchMode="contains">
+							<h:outputText value="#{cliente.cliHabilitado}" />
+						</p:column>
+
+<!-- 						<p:column> -->
+<!-- 								<h:outputText value="Activacion" /> -->
+<!-- 						</p:column> -->
+						
+<!-- 						<p:column> -->
+<!-- 								<h:outputText value="Inactivacion" /> -->
+<!-- 						</p:column> -->
+
+
+
+
+					</p:dataTable>
+
+				</p:panel>
+			
+			
+			</p:tab>
+			
 
 		</p:tabView>
+		
 	</h:form>
 </h:body>
 </html>
