@@ -85,6 +85,11 @@ public class BusinessDelegate implements IBusinessDelegate {
 		
 		return clienteLogic.findAll();
 	}
+	
+	@Override
+	public List<Clientes> findAllActiveClientes()throws Exception{
+		return clienteLogic.findAllActiveClients();
+	}
 
 	@Override
 	public void saveTiposDocumentos(TiposDocumentos entity) throws Exception {

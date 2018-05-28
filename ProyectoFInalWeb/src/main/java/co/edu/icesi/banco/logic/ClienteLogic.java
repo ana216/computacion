@@ -1,5 +1,6 @@
 package co.edu.icesi.banco.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -165,6 +166,25 @@ public class ClienteLogic implements IClienteLogic {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List<Clientes> findAll() throws Exception {
 		List<Clientes> clientes = clientesDAO.findAll();
+
+		// validamos que existan clientes
+		if (clientes.size() < 1)
+			throw new Exception("No existen clientes");
+
+		return clientes;
+	}
+
+	@Override
+	public List<Clientes> findAllActiveClients() throws Exception {
+		List<Clientes> clientesTotales = clientesDAO.findAll();
+		List<Clientes> clientes= new ArrayList<Clientes>();
+		
+		for (int i = 0; i < clientesTotales.size(); i++) {
+			
+			if(clientesTotales.get(i).getCliHabilitado().trim().equals("S")) {
+				clientes.add(clientesTotales.get(i));
+			}
+		}
 
 		// validamos que existan clientes
 		if (clientes.size() < 1)

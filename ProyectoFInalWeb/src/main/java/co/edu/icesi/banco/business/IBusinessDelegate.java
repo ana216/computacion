@@ -19,6 +19,7 @@ public interface IBusinessDelegate {
 	public void deleteClientes(Clientes entity)throws Exception;
 	public Clientes findByIdClientes(Long cliId)throws Exception;
 	public List<Clientes> findAllClientes()throws Exception;
+	public List<Clientes> findAllActiveClientes()throws Exception;
 	public void saveTiposDocumentos (TiposDocumentos entity)throws Exception;
 	public void updateTiposDocumentos(TiposDocumentos entity)throws Exception;
 	public void deleteTiposDocumentos(TiposDocumentos entity)throws Exception;

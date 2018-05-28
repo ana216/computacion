@@ -11,4 +11,5 @@ public interface IClienteLogic {
 	public void delete(Clientes entity)throws Exception;
 	public Clientes findById(Long cliId)throws Exception;
 	public List<Clientes> findAll()throws Exception;
+	public List<Clientes> findAllActiveClients()throws Exception;
 }
