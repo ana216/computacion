@@ -31,8 +31,8 @@ public class CuentaView {
 
 	private InputMask txtCueNumero;
 	private InputText txtIdCliente;
-	private InputNumber txtCuentaSaldo;
-	private Password txtCueClave;
+	private BigDecimal txtCuentaSaldo;
+	private String txtCueClave;
 
 	private List<Cuentas> lstCuentas;
 	private List<Cuentas> lstCuentasHistoricas;
@@ -53,19 +53,19 @@ public class CuentaView {
 		this.businessDelegate = businessDelegate;
 	}
 
-	public InputNumber getTxtCuentaSaldo() {
+	public BigDecimal getTxtCuentaSaldo() {
 		return txtCuentaSaldo;
 	}
 
-	public void setTxtCuentaSaldo(InputNumber txtCuentaSaldo) {
+	public void setTxtCuentaSaldo(BigDecimal txtCuentaSaldo) {
 		this.txtCuentaSaldo = txtCuentaSaldo;
 	}
 
-	public Password getTxtCueClave() {
+	public String getTxtCueClave() {
 		return txtCueClave;
 	}
 
-	public void setTxtCueClave(Password txtCueClave) {
+	public void setTxtCueClave(String txtCueClave) {
 		this.txtCueClave = txtCueClave;
 	}
 
@@ -135,10 +135,10 @@ public class CuentaView {
 						.findByIdClientes(Long.parseLong(txtIdCliente.getValue().toString()));
 				Cuentas cuenta = new Cuentas();
 				cuenta.setCueNumero(txtCueNumero.getValue().toString());
-				cuenta.setCueClave(txtCueClave.getValue().toString());
+				cuenta.setCueClave(txtCueClave);
 				cuenta.setClientes(cliente);
 				cuenta.setCueActiva("S");
-				cuenta.setCueSaldo(new BigDecimal(txtCuentaSaldo.getValue().toString()));
+				cuenta.setCueSaldo(new BigDecimal(txtCuentaSaldo.toString()));
 
 				businessDelegate.saveCuenta(cuenta);
 				lstCuentas = null;
@@ -162,8 +162,8 @@ public class CuentaView {
 
 	public String action_limpiar() {
 
-		txtCueClave.resetValue();
-		txtCuentaSaldo.resetValue();
+		txtCueClave="";
+		txtCuentaSaldo= new BigDecimal("0");
 		txtCueNumero.resetValue();
 
 		return "";
@@ -215,7 +215,9 @@ public class CuentaView {
 		try {
 			if (txtIdCliente == null || txtIdCliente.getValue() == null
 					|| txtIdCliente.getValue().toString().trim().equals("")) {
+				panel.setVisible(false);
 				throw new Exception("Debe ingresar un número de identificación");
+				
 			}
 			Long id = Long.parseLong(txtIdCliente.getValue().toString());
 			Clientes cliente = businessDelegate.findByIdClientes(id);
@@ -238,6 +240,7 @@ public class CuentaView {
 			}
 
 		} catch (Exception e) {
+			panel.setVisible(false);
 			FacesContext.getCurrentInstance().addMessage("",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
 
@@ -277,10 +280,10 @@ public class CuentaView {
 						.findByIdClientes(Long.parseLong(txtIdCliente.getValue().toString()));
 				Cuentas cuenta = businessDelegate.findByIdCuenta(txtCueNumero.getValue().toString());
 				
-				cuenta.setCueClave(txtCueClave.getValue().toString());
+				cuenta.setCueClave(txtCueClave);
 				cuenta.setClientes(cliente);
 				cuenta.setCueActiva("S");
-				cuenta.setCueSaldo(new BigDecimal(txtCuentaSaldo.getValue().toString()));
+				cuenta.setCueSaldo(txtCuentaSaldo);
 
 				businessDelegate.updateCuenta(cuenta);
 				lstCuentas = null;

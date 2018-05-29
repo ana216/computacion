@@ -33,13 +33,13 @@
 						<p:outputLabel value="Saldo" />
 						<p:column>
 							<p:inputNumber value="#{cuentaView.txtCuentaSaldo}"
-								decimalPlaces="15">
+								decimalPlaces="2">
 								
 							</p:inputNumber>
 						</p:column>
 
 						<p:outputLabel value="Clave" />
-						<p:password value="#{cuentaView.txtCueClave}" />
+						<p:password id="feedback" value="#{cuentaView.txtCueClave}" feedback="true" />
 
 					</h:panelGrid>
 				</p:panel>
@@ -62,22 +62,22 @@
 						oncomplete="PF('tblCliente').filter()"
 						action="#{cuentaView.action_modificar}" />
 					<p:commandButton disabled="true"
-						binding="#{manejarClientes.btnEliminar}" id="btnBorrar"
+						binding="#{cuentaView.btnEliminar}" id="btnBorrar"
 						value="Inactivar" update="frmCuenta, growl"
-						oncomplete="PF('tblCliente').filter()"
-						action="#{manejarClientes.action_inactivar}" />
+						oncomplete="PF('tblCuenta').filter()"
+						action="#{cuentaView.action_inactivar}" />
 					<p:commandButton id="btnLimpiar"
-						binding="#{manejarClientes.btnLimpiar}" value="Limpiar"
-						update="frmCuenta, growl" oncomplete="PF('tblCliente').filter()"
-						action="#{manejarClientes.action_limpiar}" />
+						binding="#{cuentaView.btnLimpiar}" value="Limpiar"
+						update="frmCuenta, growl" oncomplete="PF('tblCuenta').filter()"
+						action="#{cuentaView.action_limpiar}" />
 					<p:commandButton id="btnAcivarCliente"
-						binding="#{manejarClientes.btnActivar}" value="Activar"
-						update="frmCuenta, growl" oncomplete="PF('tblCliente').filter()"
-						action="#{manejarClientes.action_activar}" />
+						binding="#{cuentaView.btnActivar}" value="Activar"
+						update="frmCuenta, growl" oncomplete="PF('tblCuenta').filter()"
+						action="#{cuentaView.action_activar}" />
 				</h:panelGrid>
 			</p:tab>
 
-			<p:tab title="Gestionar cliente">
+			<p:tab title="Gestionar cuenta">
 
 				<p:panel>
 
