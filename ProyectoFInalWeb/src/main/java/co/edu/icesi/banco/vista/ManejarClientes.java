@@ -331,6 +331,9 @@ public class ManejarClientes {
 			try {
 				lstClientes = businessDelegate.findAllActiveClientes();
 			} catch (Exception e) {
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+
 
 			}
 		}
@@ -416,6 +419,9 @@ public class ManejarClientes {
 			try {
 				lstClientesHistoricos = businessDelegate.findAllClientes();
 			} catch (Exception e) {
+
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
 
 			}
 		}

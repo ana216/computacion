@@ -5,41 +5,68 @@
 
 <h:head>
 
-	<h1>Cuentas</h1>
+	<h1>Consignaciones</h1>
 
 
 </h:head>
 
 <h:body>
-	<h:form id="frmCuenta">
+	<h:form id="frmConsignacion">
 		<p:tabView>
 
 
-			<p:tab title="Crear cuenta">
+			<p:tab title="Realizar consignación">
 				<h:panelGrid columns="2">
-					<p:outputLabel value="Id del cliente propietario de la cuenta" />
-					<p:inputText binding="#{cuentaView.txtIdCliente}">
-						<p:ajax listener="#{cuentaView.txtClienteIdentificacionListener}"
-							update="frmCuenta,growl"></p:ajax>
+					<p:outputLabel value="Usuario que realiza la consignación" />
+
+					<p:selectOneMenu binding="#{consignacionesView.sUsuarios}"
+						required="true" label="Text 3">
+						<f:selectItem itemLabel="Seleccionar uno" itemValue="-1"
+							noSelectionOption="true" />
+						<f:selectItems value="#{consignacionesView.lstUsuariosItem}" />
+						<p:ajax
+							listener="#{consignacionesView.txtClienteIdentificacionListener}"
+							update="frmConsignacion,growl"></p:ajax>
+
+					</p:selectOneMenu>
+
+
+					<p:outputLabel
+						value="Id del cliente propietario de la cuenta a consignar" />
+
+					<p:inputText binding="#{consignacionesView.txtIdCliente}">
+						<p:ajax
+							listener="#{consignacionesView.txtClienteIdentificacionListener}"
+							update="frmConsignacion,growl"></p:ajax>
 
 					</p:inputText>
+
 				</h:panelGrid>
-				<p:panel visible="false" binding="#{cuentaView.panel}">
+				<p:panel visible="false" binding="#{consignacionesView.panel1}">
 					<h:panelGrid columns="2">
 
 						<p:outputLabel value="Número de cuenta" />
-						<p:inputMask binding="#{cuentaView.txtCueNumero}"
-							mask="9999-9999-9999" />
-						<p:outputLabel value="Saldo" />
-						<p:column>
-							<p:inputNumber value="#{cuentaView.txtCuentaSaldo}"
-								decimalPlaces="2">
-								
-							</p:inputNumber>
-						</p:column>
+
+						<p:selectOneMenu binding="#{consignacionesView.sCuentas}"
+							required="true" label="Text 3">
+							<f:selectItem itemLabel="Seleccionar uno" itemValue="-1"
+								noSelectionOption="true" />
+							<f:selectItems value="#{consignacionesView.lstCuentasItem}" />
+
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Valor consignación" />
+
+						<p:inputNumber value="#{consignacionesView.txtValor}"
+							decimalPlaces="2">
+
+						</p:inputNumber>
+
 
 						<p:outputLabel value="Clave" />
-						<p:password id="feedback" value="#{cuentaView.txtCueClave}" feedback="true" />
+						<p:password id="feedback" value="#{cuentaView.txtCueClave}"
+							feedback="true" />
 
 					</h:panelGrid>
 				</p:panel>
@@ -52,10 +79,9 @@
 
 				<h:panelGrid columns="5">
 					<p:commandButton icon="ui-icon-check"
-						binding="#{cuentaView.btnCrear}" disabled="false"
-						id="btnCrear" action="#{cuentaView.action_crear}"
-						value="Crear" update="frmCuenta, growl"
-						oncomplete="PF('tblCuenta').filter()" />
+						binding="#{cuentaView.btnCrear}" disabled="false" id="btnCrear"
+						action="#{cuentaView.action_crear}" value="Crear"
+						update="frmCuenta, growl" oncomplete="PF('tblCuenta').filter()" />
 					<p:commandButton disabled="true"
 						binding="#{cuentaView.btnModificar}" id="btnModificar"
 						value="Modificar" update="frmCuenta, growl"
@@ -66,9 +92,9 @@
 						value="Inactivar" update="frmCuenta, growl"
 						oncomplete="PF('tblCuenta').filter()"
 						action="#{cuentaView.action_inactivar}" />
-					<p:commandButton id="btnLimpiar"
-						binding="#{cuentaView.btnLimpiar}" value="Limpiar"
-						update="frmCuenta, growl" oncomplete="PF('tblCuenta').filter()"
+					<p:commandButton id="btnLimpiar" binding="#{cuentaView.btnLimpiar}"
+						value="Limpiar" update="frmCuenta, growl"
+						oncomplete="PF('tblCuenta').filter()"
 						action="#{cuentaView.action_limpiar}" />
 					<p:commandButton id="btnAcivarCliente"
 						binding="#{cuentaView.btnActivar}" value="Activar"
@@ -96,51 +122,26 @@
 							</p:outputPanel>
 						</f:facet>
 
-						<p:column filterBy="#{cuenta.clientes.cliId}" headerText="Id del cliente"
-							filterMatchMode="contains">
+						<p:column filterBy="#{cuenta.clientes.cliId}"
+							headerText="Id del cliente" filterMatchMode="contains">
 							<h:outputText value="#{cuenta.clientes.cliId}" />
 						</p:column>
 
 
 
-						<p:column headerText="Número de cuenta" filterBy="#{cuenta.cueNumero}"
-							filterMatchMode="contains">
+						<p:column headerText="Número de cuenta"
+							filterBy="#{cuenta.cueNumero}" filterMatchMode="contains">
 							<h:outputText value="#{cuenta.cueNumero}" />
 						</p:column>
 
-						<p:column headerText="Saldo"
-							filterBy="#{cuenta.cueSaldo}" filterMatchMode="contains">
+						<p:column headerText="Saldo" filterBy="#{cuenta.cueSaldo}"
+							filterMatchMode="contains">
 							<h:outputText value="#{cuenta.cueSaldo}" />
 						</p:column>
-
-<!-- 						<p:column headerText="Clave" filterBy="#{cuenta.cueClave}" -->
-<!-- 							filterMatchMode="contains"> -->
-<!-- 							<h:outputText value="#{cliente.cueClave}" /> -->
-<!-- 						</p:column> -->
-
-<!-- 						<p:column> -->
-<!-- 							<f:facet name="header"> -->
-<!-- 								<h:outputText value="Botón de editar" /> -->
-<!-- 							</f:facet> -->
-<!-- 							<h:commandButton action="#{myBean.editMyData}"> -->
-<!-- 								<h:outputText value="#{myDataItem.id}" /> -->
-<!-- 							</h:commandButton> -->
-<!-- 						</p:column> -->
-
-<!-- 						<p:column> -->
-<!-- 							<f:facet name="header"> -->
-<!-- 								<h:outputText value="Botón de borrar" /> -->
-<!-- 							</f:facet> -->
-<!-- 							<h:commandButton action="#{myBean.editMyData}"> -->
-<!-- 								<h:outputText value="#{myDataItem.id}" /> -->
-<!-- 							</h:commandButton> -->
-<!-- 						</p:column> -->
 					</p:dataTable>
-
 				</p:panel>
 			</p:tab>
 		</p:tabView>
-
 	</h:form>
 </h:body>
 

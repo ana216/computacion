@@ -175,6 +175,8 @@ public class ClienteLogic implements IClienteLogic {
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+
 	public List<Clientes> findAllActiveClients() throws Exception {
 		List<Clientes> clientesTotales = clientesDAO.findAll();
 		List<Clientes> clientes= new ArrayList<Clientes>();

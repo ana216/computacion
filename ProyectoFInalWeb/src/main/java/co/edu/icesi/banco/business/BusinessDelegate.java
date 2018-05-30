@@ -90,6 +90,11 @@ public class BusinessDelegate implements IBusinessDelegate {
 	public List<Clientes> findAllActiveClientes()throws Exception{
 		return clienteLogic.findAllActiveClients();
 	}
+	
+	@Override
+	public List<Cuentas> findAllActiveCuentas()throws Exception{
+		return cuentasLogic.findAllActiveCuentas();
+	}
 
 	@Override
 	public void saveTiposDocumentos(TiposDocumentos entity) throws Exception {

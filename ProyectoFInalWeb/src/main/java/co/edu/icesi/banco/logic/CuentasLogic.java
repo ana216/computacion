@@ -1,5 +1,6 @@
 package co.edu.icesi.banco.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.icesi.banco.dao.IClientesDAO;
 import co.edu.icesi.banco.dao.ICuentasDAO;
+import co.edu.icesi.banco.modelo.Clientes;
 import co.edu.icesi.banco.modelo.Cuentas;
 
 @Service
@@ -145,5 +147,28 @@ public class CuentasLogic implements ICuentasLogic {
 
 		return cuentas;
 	}
+	
+	
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List<Cuentas> findAllActiveCuentas() throws Exception {
+		List<Cuentas> cuentasTotales = cuentasDAO.findAll();
+		List<Cuentas> cuentas= new ArrayList<Cuentas>();
+		
+		for (int i = 0; i < cuentasTotales.size(); i++) {
+			
+			if(cuentasTotales.get(i).getCueActiva().trim().equals("S")) {
+				cuentas.add(cuentasTotales.get(i));
+			}
+		}
+
+		// validamos que existan clientes
+		if (cuentas.size() < 1)
+			throw new Exception("No existen clientes");
+
+		return cuentas;
+	}
+	
 
 }

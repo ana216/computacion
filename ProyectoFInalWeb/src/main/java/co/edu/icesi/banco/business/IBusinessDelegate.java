@@ -25,4 +25,5 @@ public interface IBusinessDelegate {
 	public void deleteTiposDocumentos(TiposDocumentos entity)throws Exception;
 	public TiposDocumentos findByIdTiposDocumentos(Long tipDoc)throws Exception;
 	public List<TiposDocumentos> findAllTiposDocumentos()throws Exception;
+	public List<Cuentas> findAllActiveCuentas()throws Exception;
 }

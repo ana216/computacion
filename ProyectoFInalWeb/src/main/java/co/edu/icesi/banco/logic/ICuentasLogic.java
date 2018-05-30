@@ -11,5 +11,6 @@ public interface ICuentasLogic {
 	public void delete(Cuentas entity)throws Exception;
 	public Cuentas findById(String cueNum)throws Exception;
 	public List<Cuentas> findAll()throws Exception;
+	public List<Cuentas> findAllActiveCuentas() throws Exception;
 
 }

@@ -11,11 +11,10 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputmask.InputMask;
-import org.primefaces.component.inputnumber.InputNumber;
+
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.panel.Panel;
 
-import org.primefaces.component.password.Password;
 
 
 import co.edu.icesi.banco.business.IBusinessDelegate;
@@ -248,6 +247,17 @@ public class CuentaView {
 	}
 
 	public List<Cuentas> getLstCuentas() {
+		if (lstCuentas == null) {
+			try {
+				lstCuentas = businessDelegate.findAllActiveCuentas();
+			} catch (Exception e) {
+
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+
+			}
+		}
+
 		return lstCuentas;
 	}
 
@@ -256,7 +266,18 @@ public class CuentaView {
 	}
 
 	public List<Cuentas> getLstCuentasHistoricas() {
-		return lstCuentasHistoricas;
+		if (lstCuentasHistoricas == null) {
+			try {
+				lstCuentasHistoricas = businessDelegate.findAllCuentas();
+			} catch (Exception e) {
+
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+
+			}
+		}
+
+		return lstCuentas;
 	}
 
 	public void setLstCuentasHistoricas(List<Cuentas> lstCuentasHistoricas) {
