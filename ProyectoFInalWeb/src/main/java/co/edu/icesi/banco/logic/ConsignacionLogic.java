@@ -1,5 +1,6 @@
 package co.edu.icesi.banco.logic;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,11 @@ public class ConsignacionLogic implements IConsignacionLogic {
 		/// validamos que la descripción sea valida
 		if (entity.getConDescripcion() == null || entity.getConDescripcion().trim().equals("")) {
 			throw new Exception("La descripción debe ser válida");
+		}
+		
+		/// validamos el valor de la consignacion
+		if (entity.getConValor() == null || entity.getConValor().compareTo(new BigDecimal("0"))<1) {
+			throw new Exception("El valor no es válido");
 		}
 		
 		//Calculo consecutivo
@@ -101,6 +107,11 @@ public class ConsignacionLogic implements IConsignacionLogic {
 		if (entity.getConDescripcion() == null || entity.getConDescripcion().trim().equals("")) {
 			throw new Exception("La descripción debe ser válida");
 		}
+		
+		/// validamos el valor de la consignacion
+				if (entity.getConValor() == null || entity.getConValor().compareTo(new BigDecimal("0"))<1) {
+					throw new Exception("El valor no es válido");
+				}
 		
 		consignacionesDAO.update(entity);
 

@@ -7,11 +7,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import co.edu.icesi.banco.logic.IClienteLogic;
+import co.edu.icesi.banco.logic.IConsignacionLogic;
 import co.edu.icesi.banco.logic.ICuentasLogic;
 import co.edu.icesi.banco.logic.ITiposDocumentosLogic;
+import co.edu.icesi.banco.logic.IUsuarioLogic;
 import co.edu.icesi.banco.modelo.Clientes;
+import co.edu.icesi.banco.modelo.Consignaciones;
 import co.edu.icesi.banco.modelo.Cuentas;
 import co.edu.icesi.banco.modelo.TiposDocumentos;
+import co.edu.icesi.banco.modelo.Usuarios;
 
 
 @Service
@@ -25,6 +29,12 @@ public class BusinessDelegate implements IBusinessDelegate {
 	private ITiposDocumentosLogic tipodocumentosLogic;	
 	@Autowired
 	private ICuentasLogic cuentasLogic;
+	
+	@Autowired
+	private IUsuarioLogic usuariosLogic;
+	
+	@Autowired
+	private IConsignacionLogic consignacionLogic;
 	
 	@Override
 	public void saveCuenta(Cuentas entity) throws Exception {
@@ -124,6 +134,18 @@ public class BusinessDelegate implements IBusinessDelegate {
 	public List<TiposDocumentos> findAllTiposDocumentos() throws Exception {
 		
 		return tipodocumentosLogic.findAll();
+	}
+
+	@Override
+	public Usuarios findByIdUsuario(Long usuCedula) throws Exception {
+		// TODO Auto-generated method stub
+		return usuariosLogic.findById(usuCedula);
+	}
+
+	@Override
+	public void saveConsignacion(Consignaciones entity) throws Exception {
+		consignacionLogic.save(entity);
+		
 	}
 
 	

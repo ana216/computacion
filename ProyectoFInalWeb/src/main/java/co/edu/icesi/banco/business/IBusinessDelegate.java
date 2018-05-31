@@ -3,8 +3,10 @@ package co.edu.icesi.banco.business;
 import java.util.List;
 
 import co.edu.icesi.banco.modelo.Clientes;
+import co.edu.icesi.banco.modelo.Consignaciones;
 import co.edu.icesi.banco.modelo.Cuentas;
 import co.edu.icesi.banco.modelo.TiposDocumentos;
+import co.edu.icesi.banco.modelo.Usuarios;
 
 public interface IBusinessDelegate {
 
@@ -26,4 +28,6 @@ public interface IBusinessDelegate {
 	public TiposDocumentos findByIdTiposDocumentos(Long tipDoc)throws Exception;
 	public List<TiposDocumentos> findAllTiposDocumentos()throws Exception;
 	public List<Cuentas> findAllActiveCuentas()throws Exception;
+	public Usuarios findByIdUsuario(Long usuCedula)throws Exception;
+	public void saveConsignacion(Consignaciones entity)throws Exception;
 }
