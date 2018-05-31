@@ -275,10 +275,11 @@ public class TransferenciasView {
 				businessDelegate.saveTransferencias(transferencias);
 
 				lstTransferencias=null;
-				action_limpiar();
+				
 				FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Se realizo el retiro satisfactoriamente", ""));
+						"Se realizo la transferencia satisfactoriamente", ""));
 
+				action_limpiar();
 			} else {
 
 				FacesContext.getCurrentInstance().addMessage("",
@@ -289,8 +290,8 @@ public class TransferenciasView {
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage("",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage() , ""));
-
-			System.out.println(e.getMessage());
+		
+			
 		}
 		return "";
 	}

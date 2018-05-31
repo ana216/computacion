@@ -76,13 +76,17 @@ public class RetirosLogic implements IRetirosLogic {
 		}
 
 		Cuentas cuenta = cuentasDAO.findById(cueNumero);
+		if(cuenta==null) {
+			throw new Exception("La cuenta origen no existe");
+		}
+		
 		if (cuenta.getCueSaldo().compareTo(entity.getRetValor()) < 0) {
 			throw new Exception("La cuenta no tiene saldo suficiente");
 		}
 		BigDecimal nuevoValor = cuenta.getCueSaldo().subtract(entity.getRetValor());
 		cuenta.setCueSaldo(nuevoValor);
 
-		cuentasDAO.save(cuenta);
+		cuentasDAO.update(cuenta);
 		retirosDAO.save(entity);
 
 	}

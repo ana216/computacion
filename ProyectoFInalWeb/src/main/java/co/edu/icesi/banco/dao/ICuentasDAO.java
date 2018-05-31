@@ -11,6 +11,7 @@ public interface ICuentasDAO {
 	public void delete(Cuentas entity);
 	public Cuentas findById(String numCuenta);
 	public List<Cuentas> findAll();
+	public List<Cuentas> findAllActiveCuentasDeUnCliente(Long cliId);
 
 
 }

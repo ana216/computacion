@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import co.edu.icesi.banco.modelo.Cuentas;
-import co.edu.icesi.banco.modelo.TiposDocumentos;
 
 
 @Repository
@@ -44,8 +44,18 @@ public class CuentasDAO implements ICuentasDAO{
 
 	@Override
 	public List<Cuentas> findAll() {
-		String jpql="Select cli from Cuentas cli";
+		String jpql="Select cuen from Cuentas cuen";
 		return entitymanager.createQuery(jpql).getResultList();
+	}
+
+	@Override
+	public List<Cuentas> findAllActiveCuentasDeUnCliente(Long cliId) {
+		String jpql="Select cuen from Cuentas cuen"
+				+ "where cuen.cliId = ?1"
+				+ "AND cuen.cue_activa";
+		Query query =entitymanager.createQuery(jpql);
+		query.setParameter(1,cliId);
+		return query.getResultList();
 	}
 
 }

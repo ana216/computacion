@@ -77,10 +77,14 @@ public class ConsignacionLogic implements IConsignacionLogic {
 		}
 
 		Cuentas cuenta = cuentasDAO.findById(cueNumero);
+		if(cuenta==null) {
+			throw new Exception("La cuenta origen no existe");
+		}
 		BigDecimal nuevoValor = cuenta.getCueSaldo().add(entity.getConValor());
 		cuenta.setCueSaldo(nuevoValor);
 
-		cuentasDAO.save(cuenta);
+
+		cuentasDAO.update(cuenta);
 		consignacionesDAO.save(entity);
 
 	}

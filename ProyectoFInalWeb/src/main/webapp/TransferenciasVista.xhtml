@@ -17,9 +17,9 @@
 		<p:tabView>
 
 
-			<p:tab title="Realizar consignación">
+			<p:tab title="Realizar transferencia">
 				<h:panelGrid columns="2">
-					<p:outputLabel value="Usuario que realiza la consignación" />
+					<p:outputLabel value="Usuario que realiza la transferencia" />
 
 					<p:selectOneMenu binding="#{transferenciasView.sUsuarios}"
 						required="true" label="Usuario">
@@ -53,7 +53,7 @@
 
 				</h:panelGrid>
 				
-				<p:panel binding="#{transferenciasView.panel1}">
+				<p:panel visible="false" binding="#{transferenciasView.panel1}">
 					<h:panelGrid columns="2">
 
 						<p:outputLabel value="Valor consignación" />

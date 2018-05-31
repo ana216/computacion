@@ -87,6 +87,10 @@ public class TransferenciaLogic implements ITransferenciaLogic {
 		if(cuentaDest==null) {
 			throw new Exception("La cuenta destino no existe");
 		}
+		if(cuentaDest.getCueNumero().equals(cuenta.getCueNumero())) {
+			throw new Exception("La cuenta de destino y origen es la misma");
+		}
+		
 		
 		if(cuenta.getCueActiva().trim().equalsIgnoreCase("N")) {
 			throw new Exception("La cuenta origen no esta activa");
@@ -105,8 +109,8 @@ public class TransferenciaLogic implements ITransferenciaLogic {
 		cuentaDest.setCueSaldo(nuevoValor);
 
 		
-		cuentasDAO.save(cuenta);
-		cuentasDAO.save(cuentaDest);
+		cuentasDAO.update(cuenta);
+		cuentasDAO.update(cuentaDest);
 		transferenciasDAO.save(entity);
 
 	}
