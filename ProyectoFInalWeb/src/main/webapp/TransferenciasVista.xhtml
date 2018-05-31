@@ -5,9 +5,42 @@
 
 <h:head>
 
+	<p:tabMenu activeIndex="#{param.i}">
+
+		<p:menuitem value="Administrar clientes" outcome="/VistaCliente.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Administrar cuentas" outcome="/CuentaVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar consignación"
+			outcome="/ConsignacionesVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar retiros" outcome="/RetirosVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar transferencia"
+			outcome="/TransferenciasVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+
+		<p:menuitem value="Realizar consultas" outcome="/ConsultasVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+	</p:tabMenu>
+
+	<link rel="StyleSheet" href="barraLateral.css" title="Barra lateral" />
+
 
 	<h1>Transferencias</h1>
-	
+
 
 
 </h:head>
@@ -35,15 +68,17 @@
 					<p:outputLabel value="Número de cuenta origen" />
 					<p:inputMask binding="#{transferenciasView.txtNumCuentaOrigen}"
 						mask="9999-9999-9999">
-						<p:ajax listener="#{transferenciasView.txtNumCuentaListenerOrigen}"
+						<p:ajax
+							listener="#{transferenciasView.txtNumCuentaListenerOrigen}"
 							update="frmTransferencia,growl"></p:ajax>
 
 					</p:inputMask>
-					
+
 					<p:outputLabel value="Número de cuenta destino" />
 					<p:inputMask binding="#{transferenciasView.txtNumCuentaDestino}"
 						mask="9999-9999-9999">
-						<p:ajax listener="#{transferenciasView.txtNumCuentaListenerDestino}"
+						<p:ajax
+							listener="#{transferenciasView.txtNumCuentaListenerDestino}"
 							update="frmTransferencia,growl"></p:ajax>
 
 					</p:inputMask>
@@ -52,7 +87,7 @@
 
 
 				</h:panelGrid>
-				
+
 				<p:panel visible="false" binding="#{transferenciasView.panel1}">
 					<h:panelGrid columns="2">
 
@@ -74,8 +109,8 @@
 						<p:commandButton icon="ui-icon-check"
 							binding="#{transferenciasView.btnRealizarTransferencias}"
 							disabled="false" id="btnCrear"
-							action="#{transferenciasView.action_realizar_transferencia}" value="Realizar transferencia"
-							update="frmTransferencia, growl"
+							action="#{transferenciasView.action_realizar_transferencia}"
+							value="Realizar transferencia" update="frmTransferencia, growl"
 							oncomplete="PF('tblTransferencia').filter()" />
 
 					</h:panelGrid>
@@ -118,17 +153,19 @@
 						<p:column headerText="Número de cuenta origen"
 							filterBy="#{transferencia.cuentasByCueNumOrigen.cueNumero}"
 							filterMatchMode="contains">
-							<h:outputText value="#{transferencia.cuentasByCueNumOrigen.cueNumero}" />
+							<h:outputText
+								value="#{transferencia.cuentasByCueNumOrigen.cueNumero}" />
 						</p:column>
-						
+
 						<p:column headerText="Número de cuenta destino"
 							filterBy="#{transferencia.cuentasByCueNumDestino.cueNumero}"
 							filterMatchMode="contains">
-							<h:outputText value="#{transferencia.cuentasByCueNumDestino.cueNumero}" />
+							<h:outputText
+								value="#{transferencia.cuentasByCueNumDestino.cueNumero}" />
 						</p:column>
 
-						<p:column headerText="Valor" filterBy="#{transferencia.transMonto}"
-							filterMatchMode="contains">
+						<p:column headerText="Valor"
+							filterBy="#{transferencia.transMonto}" filterMatchMode="contains">
 							<h:outputText value="#{transferencia.transMonto}" />
 						</p:column>
 
@@ -138,8 +175,8 @@
 							<h:outputText value="#{transferencia.transDescripcion}" />
 						</p:column>
 
-						<p:column headerText="Fecha" filterBy="#{transferencia.transFecha}"
-							filterMatchMode="contains">
+						<p:column headerText="Fecha"
+							filterBy="#{transferencia.transFecha}" filterMatchMode="contains">
 							<h:outputText value="#{transferencia.transFecha}" />
 						</p:column>
 					</p:dataTable>

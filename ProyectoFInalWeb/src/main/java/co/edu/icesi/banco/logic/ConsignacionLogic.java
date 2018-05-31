@@ -2,6 +2,7 @@ package co.edu.icesi.banco.logic;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,6 +157,27 @@ public class ConsignacionLogic implements IConsignacionLogic {
 
 		return consignaciones;
 
+	}
+
+	@Override
+	public List<Consignaciones> findConsignacionesPorClienteYFecha(Long cliId, Date fechaIni, Date fechaFin)
+			throws Exception {
+	
+
+		// validamos que las fechas este correctas
+		if(fechaIni.before(fechaFin)) {
+			throw new Exception("Las fechas son inválidas");
+		}
+		
+		List<Consignaciones> consignaciones = consignacionesDAO.findConsignacionesPorClienteYFecha(cliId, fechaIni, fechaFin);
+
+		// validamos que existan consignaciones
+		if (consignaciones.size() < 1)
+			throw new Exception("No existen consignaciones");
+
+		return consignaciones;
+		
+		
 	}
 
 }

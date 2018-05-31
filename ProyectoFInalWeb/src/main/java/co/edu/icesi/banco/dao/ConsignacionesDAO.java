@@ -1,9 +1,11 @@
 package co.edu.icesi.banco.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -47,6 +49,21 @@ public class ConsignacionesDAO implements IConsignacionesDAO {
 		String jpql="Select con from Consignaciones con";
 		return entitymanager.createQuery(jpql).getResultList();
 	}
+
+	@Override
+	public List<Consignaciones> findConsignacionesPorClienteYFecha(Long cliId, Date fechaIni, Date fechaFIn) {
+		String jpql="Select con from Consignaciones con "
+				+ "where con.cuentas.clientes.cliId = ?1 "
+				+ "AND con.conFecha BETWEEN ?2 AND ?3";
+		Query query =entitymanager.createQuery(jpql);
+		query.setParameter(1,cliId);
+		query.setParameter(2,fechaIni);
+		query.setParameter(3,fechaFIn);
+		return query.getResultList();
+	
+	
+	}
+	
 	
 
 

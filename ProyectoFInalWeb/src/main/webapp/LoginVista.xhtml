@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<h:head>
+
+	<link rel="StyleSheet" href="login.css" title="Login" />
+	<link rel="StyleSheet" href="barraLateral.css" title="barra" />
+
+
+
+
+
+</h:head>
+<h:form id="frmLogin">
+	<h:body style="background-color:#eee;">
+
+
+		<div class="login">
+			<div class="heading">
+				<h2>Ingresar al sistema</h2>
+				<form action="#">
+
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon"><i class="fa fa-user"></i></span>
+						<p:inputText placeholder="Ingrese usuario"
+							binding="#{loginView.usuario}" />
+					</div>
+
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+						<p:password binding="#{loginView.contrasena}"
+							placeholder="Ingrese contraseña" />
+
+					</div>
+					<p:growl id="growl" life="2000" />
+
+					<p:commandButton disabled="false" id="btnIngreso"
+						action="#{loginView.clickIngreso}" value="Ingresar" update="growl" />
+
+				</form>
+			</div>
+		</div>
+
+</h:body>
+</h:form>
+
+
+</html>

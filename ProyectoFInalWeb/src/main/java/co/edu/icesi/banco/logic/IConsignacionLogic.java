@@ -1,5 +1,6 @@
 package co.edu.icesi.banco.logic;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -10,5 +11,7 @@ public interface IConsignacionLogic {
 	public void update(Consignaciones entity)throws Exception;
 	public void delete(Consignaciones entity)throws Exception;
 	public Consignaciones findById(Long cliId)throws Exception;
-	public List<Consignaciones> findAll()throws Exception;
+	public List<Consignaciones> findAll()throws Exception;	
+	public List<Consignaciones> findConsignacionesPorClienteYFecha(Long cliId, Date fechaIni, Date fechaFin)throws Exception;
+
 }

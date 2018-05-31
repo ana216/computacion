@@ -1,5 +1,6 @@
 package co.edu.icesi.banco.business;
 
+import java.util.Date;
 import java.util.List;
 
 import co.edu.icesi.banco.modelo.Clientes;
@@ -39,5 +40,7 @@ public interface IBusinessDelegate {
 	public void saveTransferencias(Transferencias entity)throws Exception;
 	public List<Transferencias> findAllTransferencias()throws Exception;
 	public List<Cuentas> findAllCentasDeUnCliente(Long cliId)throws Exception;
+	public List<Consignaciones> findConsignacionesPorClienteYFecha(Long cliId, Date fechaIni, Date fechaFin)throws Exception;
+
 	
 }

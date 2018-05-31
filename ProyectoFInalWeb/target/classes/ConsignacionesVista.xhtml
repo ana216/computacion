@@ -5,6 +5,39 @@
 
 <h:head>
 
+<p:tabMenu activeIndex="#{param.i}">
+
+
+		<p:menuitem value="Administrar clientes" outcome="/VistaCliente.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Administrar cuentas" outcome="/CuentaVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar consignación"
+			outcome="/ConsignacionesVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar retiros" outcome="/RetirosVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar transferencia"
+			outcome="/TransferenciasVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+
+		<p:menuitem value="Realizar consultas" outcome="/ConsultasVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+	</p:tabMenu>
+
+	<link rel="StyleSheet" href="barraLateral.css" title="Barra lateral" />
+
 	<h1>Consignaciones</h1>
 
 

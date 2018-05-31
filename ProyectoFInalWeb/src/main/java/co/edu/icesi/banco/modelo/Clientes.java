@@ -65,7 +65,7 @@ public class Clientes implements java.io.Serializable {
 		this.cliId = cliId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tdoc_codigo", nullable = false)
 	public TiposDocumentos getTiposDocumentos() {
 		return this.tiposDocumentos;

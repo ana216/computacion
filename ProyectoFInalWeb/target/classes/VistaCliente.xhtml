@@ -5,9 +5,48 @@
 
 <h:head>
 
+
+	<p:tabMenu activeIndex="#{param.i}">
+
+
+		<p:menuitem value="Administrar clientes" outcome="/VistaCliente.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Administrar cuentas" outcome="/CuentaVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar consignación"
+			outcome="/ConsignacionesVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar retiros" outcome="/RetirosVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar transferencia"
+			outcome="/TransferenciasVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+
+		<p:menuitem value="Realizar consultas" outcome="/ConsultasVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+
+
+
+
+	</p:tabMenu>
+
+
+
+	<link rel="StyleSheet" href="barraLateral.css" title="Barra lateral" />
+
 	<h1>Clientes</h1>
-
-
 
 
 
@@ -84,7 +123,7 @@
 
 			</p:tab>
 
-			<p:tab title="Gestionar cliente">
+			<p:tab title="Consultar cliente">
 
 				<p:panel>
 
@@ -108,17 +147,18 @@
 							<h:outputText value="#{cliente.cliId}" />
 						</p:column>
 
-						<p:column filterBy="#{cliente.tiposDocumentos}" headerText="Tipo documento"
-							 filterMatchMode="contains">
-							<f:facet name="filter">
-								<p:selectOneMenu onchange="PF('tblCliente2').filter()">
-									<f:selectItem itemLabel="Selecciona uno" itemValue="-1"
-										noSelectionOption="true" />
-									<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" />
-								</p:selectOneMenu>
-							</f:facet>
-							<h:outputText value="Cedula" />
-						</p:column>
+<!-- 						<p:column filterBy="#{cliente.tiposDocumentos}" -->
+<!-- 							headerText="Tipo documento" filterMatchMode="contains"> -->
+<!-- 							<f:facet name="filter"> -->
+<!-- 								<p:selectOneMenu onchange="PF('tblCliente2').filter()"> -->
+<!-- 									<f:selectItem itemLabel="Selecciona uno" itemValue="-1" -->
+<!-- 										noSelectionOption="true" /> -->
+<!-- 									<f:selectItems -->
+<!-- 										value="#{manejarClientes.lstTiposDocumentosItem}" /> -->
+<!-- 								</p:selectOneMenu> -->
+<!-- 							</f:facet> -->
+<!-- 							<h:outputText value="#{CEDULA}" /> -->
+<!-- 						</p:column> -->
 
 						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
 							filterMatchMode="contains">
@@ -184,17 +224,17 @@
 							footerText="contains" filterMatchMode="contains">
 							<h:outputText value="#{cliente.cliId}" />
 						</p:column>
-<!-- 						<p:column filterBy="#{cliente.tiposDocumentos}" headerText="Tipo documento" -->
-<!-- 							 filterMatchMode="contains"> -->
-<!-- 							<f:facet name="filter"> -->
-<!-- 								<p:selectOneMenu onchange="PF('tblCliente2').filter()"> -->
-<!-- 									<f:selectItem itemLabel="Selecciona uno" itemValue="-1" -->
-<!-- 										noSelectionOption="true" /> -->
-<!-- 									<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" /> -->
-<!-- 								</p:selectOneMenu> -->
-<!-- 							</f:facet> -->
-<!-- 							<h:outputText value="Cedula" /> -->
-<!-- 						</p:column> -->
+						<!-- 						<p:column filterBy="#{cliente.tiposDocumentos}" headerText="Tipo documento" -->
+						<!-- 							 filterMatchMode="contains"> -->
+						<!-- 							<f:facet name="filter"> -->
+						<!-- 								<p:selectOneMenu onchange="PF('tblCliente2').filter()"> -->
+						<!-- 									<f:selectItem itemLabel="Selecciona uno" itemValue="-1" -->
+						<!-- 										noSelectionOption="true" /> -->
+						<!-- 									<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" /> -->
+						<!-- 								</p:selectOneMenu> -->
+						<!-- 							</f:facet> -->
+						<!-- 							<h:outputText value="Cedula" /> -->
+						<!-- 						</p:column> -->
 
 						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
 							filterMatchMode="contains">

@@ -5,6 +5,42 @@
 
 <h:head>
 
+
+<p:tabMenu activeIndex="#{param.i}">
+
+
+		<p:menuitem value="Administrar clientes" outcome="/VistaCliente.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Administrar cuentas" outcome="/CuentaVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar consignación"
+			outcome="/ConsignacionesVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar retiros" outcome="/RetirosVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+		<p:menuitem value="Realizar transferencia"
+			outcome="/TransferenciasVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+
+		<p:menuitem value="Realizar consultas" outcome="/ConsultasVista.xhtml">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+
+
+
+	</p:tabMenu>
+
+	<link rel="StyleSheet" href="barraLateral.css" title="Barra lateral" />
 	<h1>Consultas</h1>
 
 
@@ -16,17 +52,18 @@
 
 <h:body>
 	<h:form id="frmConsultas">
-	<p:growl id="growl" life="2000" />
+
+
 
 		<p:tabView>
 
 
 			<p:tab title="Consultar cuentas por cliente">
-				<h:panelGrid columns="3" cellpadding="10">
+				<h:panelGrid columns="2" cellpadding="10">
 					<p:outputLabel value="Id del cliente" />
 					<p:inputText binding="#{consultasView.txtIdentificaciones}">
 						<p:ajax listener="#{consultasView.txtIdentificacionListener}"
-							update="frmConsultas"></p:ajax>
+							update="panel1"></p:ajax>
 					</p:inputText>
 					<h:outputText id="out" value="#{consultasView.txtNombre}" />
 
@@ -58,161 +95,416 @@
 			</p:tab>
 
 			<p:tab title="Transacciones por cliente">
-			
-			<p:panel visible="false" binding=">
-			
-			</p:panel>
+				<p:growl id="growl" life="2000" />
 
-					<p:dataTable widgetVar="tblClienteTransacciones" var="cliente" rows="10"
-						paginator="true" value="#{manejarClientes.lstClientes}"
-						emptyMessage="No hay clientes con ese criterio"
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Id del cliente" />
+					<p:inputText binding="#{consultasView.txtIdentificaciones2}">
+						<p:ajax listener="#{consultasView.txtIdentificacionListener2}"
+							update="panel1"></p:ajax>
+					</p:inputText>
+
+					<p:outputLabel for="popup" value="Fecha inicial: " />
+					<p:calendar id="inline1" value="#{consultasView.dateInicial}" />
+
+					<p:outputLabel for="popup" value="Fecha final: " />
+					<p:calendar id="popup1" value="#{consultasView.dateFinal}" />
+
+					<p:outputLabel for="@next" value="Consignación: " />
+					<p:selectBooleanCheckbox
+						value="#{consultasView.clienteConsignacion}" />
+
+					<p:outputLabel for="@next" value="Retiro: " />
+					<p:selectBooleanCheckbox value="#{consultasView.clienteRetiro}" />
+
+					<p:outputLabel for="@next" value="Transferencia: " />
+					<p:selectBooleanCheckbox
+						value="#{consultasView.clienteTransferencia}" />
+
+
+				</h:panelGrid>
+				<h:panelGrid columns="1" cellpadding="10">
+					<p:commandButton icon="ui-icon-check"
+						binding="#{consultasView.btnConsultarEnCliente}" disabled="false"
+						id="btnCrear1" action="#{consultasView.consultarEnCliente}"
+						value="Consultar" update="frmConsultas" />
+
+				</h:panelGrid>
+
+
+				<p:panel id="panel1" visible="false"
+					binding="#{consultasView.panel1}">
+					<p:outputLabel value="Tabla consignaciones: "
+						style="text-align:center;" />
+
+
+					<p:dataTable widgetVar="tblConsignacion" var="consignacion"
+						rows="10" paginator="true"
+						value="#{consultasView.lstConsignacionesClientes}"
+						emptyMessage="No hay consignaciones con ese criterio"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15">
 
 						<f:facet name="header">
 							<p:outputPanel>
-								<h:outputText value="Search all fields:" />
+								<h:outputText value="Buscar en todos los campos:" />
 								<p:inputText id="globalFilter"
-									onkeyup="PF('tblCliente2').filter()" style="width:150px"
-									placeholder="Enter keyword" />
+									onkeyup="PF('tblConsignacion').filter()" style="width:150px"
+									placeholder="Ingresar palabra clave" />
 							</p:outputPanel>
 						</f:facet>
+						<p:column filterBy="#{consignacion.id.conCodigo}"
+							headerText="Id de la consignacion" filterMatchMode="contains">
+							<h:outputText value="#{consignacion.id.conCodigo}" />
+						</p:column>
 
-						<p:column filterBy="#{cliente.cliId}" headerText="Id"
+
+
+						<p:column headerText="Número de cuenta"
+							filterBy="#{consignacion.id.cueNumero}"
 							filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliId}" />
+							<h:outputText value="#{consignacion.id.cueNumero}" />
 						</p:column>
 
-						<p:column filterBy="#{cliente.tiposDocumentos}"
-							headerText="Tipo documento" filterMatchMode="contains">
-							<f:facet name="filter">
-								<p:selectOneMenu onchange="PF('tblCliente2').filter()">
-									<f:selectItem itemLabel="Selecciona uno" itemValue="-1"
-										noSelectionOption="true" />
-									<f:selectItems
-										value="#{manejarClientes.lstTiposDocumentosItem}" />
-								</p:selectOneMenu>
-							</f:facet>
-							<h:outputText value="Cedula" />
-						</p:column>
-
-						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
+						<p:column headerText="Valor" filterBy="#{consignacion.conValor}"
 							filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliNombre}" />
+							<h:outputText value="#{consignacion.conValor}" />
 						</p:column>
 
-						<p:column headerText="Dirección"
-							filterBy="#{cliente.cliDireccion}" filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliDireccion}" />
-						</p:column>
-
-						<p:column headerText="Telefono" filterBy="#{cliente.cliTelefono}"
+						<p:column headerText="Descripcion"
+							filterBy="#{consignacion.conDescripcion}"
 							filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliTelefono}" />
+							<h:outputText value="#{consignacion.conDescripcion}" />
 						</p:column>
 
-						<p:column headerText="E-Mail" filterBy="#{cliente.cliMail}"
+						<p:column headerText="Fecha" filterBy="#{consignacion.conFecha}"
 							filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliMail}" />
+							<h:outputText value="#{consignacion.conFecha}" />
 						</p:column>
-										<p:column>
-											<f:facet name="header">
-												<h:outputText value="Botón de editar" />
-											</f:facet>
-											<h:commandButton action="#{myBean.editMyData}">
-												<h:outputText value="#{myDataItem.id}" />
-											</h:commandButton>
-										</p:column>
-
-										<p:column>
-											<f:facet name="header">
-												<h:outputText value="Botón de borrar" />
-											</f:facet>
-											<h:commandButton action="#{myBean.editMyData}">
-												<h:outputText value="#{myDataItem.id}" />
-											</h:commandButton>
-										</p:column>
 					</p:dataTable>
 
 				</p:panel>
-			</p:tab>
 
-			<p:tab title="Consultar historial de clientes">
 
-				<p:panel>
+				<p:panel id="panel2" visible="false"
+					binding="#{consultasView.panel2}">
+					<p:outputLabel value="Tabla retiros: " style="text-align:center;" />
 
-					<p:dataTable widgetVar="tblCliente" var="cliente" rows="10"
-						paginator="true" value="#{manejarClientes.lstClientesHistoricos}"
-						emptyMessage="No hay clientes con ese criterio"
+
+					<p:dataTable widgetVar="tblRetiros" var="retiro" rows="10"
+						paginator="true" value="#{consultasView.lstRetirosClientes}"
+						emptyMessage="No hay retiros con ese criterio"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15">
 
 						<f:facet name="header">
 							<p:outputPanel>
-								<h:outputText value="Buscar en todos los campos" />
-								<p:inputText id="globalFilter2"
-									onkeyup="PF('tblCliente').filter()" style="width:150px"
-									placeholder="Inserte palabra clave" />
+								<h:outputText value="Buscar en todos los campos:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tblRetiros').filter()" style="width:150px"
+									placeholder="Ingresar palabra clave" />
 							</p:outputPanel>
 						</f:facet>
-
-						<p:column filterBy="#{cliente.cliId}" headerText="Id"
-							footerText="contains" filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliId}" />
+						<p:column filterBy="#{retiros.id.retCodigo}"
+							headerText="Id de la retiros" filterMatchMode="contains">
+							<h:outputText value="#{retiros.id.retCodigo}" />
 						</p:column>
-												<p:column filterBy="#{cliente.tiposDocumentos}" headerText="Tipo documento"
-													 filterMatchMode="contains">
-													<f:facet name="filter">
-														<p:selectOneMenu onchange="PF('tblCliente2').filter()">
-															<f:selectItem itemLabel="Selecciona uno" itemValue="-1"
-																noSelectionOption="true" />
-															<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" />
-														</p:selectOneMenu>
-													</f:facet>
-													<h:outputText value="Cedula" />
-												</p:column>
 
-						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
+						<p:column headerText="Número de cuenta"
+							filterBy="#{retiros.id.cueNumero}" filterMatchMode="contains">
+							<h:outputText value="#{retiros.id.cueNumero}" />
+						</p:column>
+
+						<p:column headerText="Valor" filterBy="#{retiros.retValor}"
 							filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliNombre}" />
+							<h:outputText value="#{retiros.retValor}" />
 						</p:column>
 
-						<p:column headerText="Dirección"
-							filterBy="#{cliente.cliDireccion}" filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliDireccion}" />
+						<p:column headerText="Descripcion"
+							filterBy="#{retiros.retDescripcion}" filterMatchMode="contains">
+							<h:outputText value="#{retiros.retDescripcion}" />
 						</p:column>
 
-						<p:column headerText="Telefono" filterBy="#{cliente.cliTelefono}"
+						<p:column headerText="Fecha" filterBy="#{retiros.retFecha}"
 							filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliTelefono}" />
+							<h:outputText value="#{retiros.retFecha}" />
 						</p:column>
-
-						<p:column headerText="E-Mail" filterBy="#{cliente.cliMail}"
-							filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliMail}" />
-						</p:column>
-						<p:column headerText="Activo" filterBy="#{cliente.cliHabilitado}"
-							filterMatchMode="contains">
-							<h:outputText value="#{cliente.cliHabilitado}" />
-						</p:column>
-
-												<p:column>
-														<h:outputText value="Activacion" />
-												</p:column>
-
-												<p:column>
-														<h:outputText value="Inactivacion" />
-												</p:column>
-
-
-
 
 					</p:dataTable>
 
 				</p:panel>
 
 
+				<p:panel id="panel3" visible="false"
+					binding="#{consultasView.panel3}">
+					<p:outputLabel value="Tabla transferencias: " style="text-align:center;" />
+
+
+					<p:dataTable widgetVar="tblTransferencia" var="transferencia" rows="10"
+						paginator="true" value="#{consultasView.lstTransferenciasClientes}"
+						emptyMessage="No hay transferencias con ese criterio"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Buscar en todos los campos:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tblTransferencia').filter()" style="width:150px"
+									placeholder="Ingresar palabra clave" />
+							</p:outputPanel>
+						</f:facet>
+						
+						
+						<p:column filterBy="#{transferencia.transCodigo}"
+							headerText="Id de la transferencia" filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transCodigo}" />
+						</p:column>
+
+
+
+						<p:column headerText="Número de cuenta origen"
+							filterBy="#{transferencia.cuentasByCueNumOrigen.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.cuentasByCueNumOrigen.cueNumero}" />
+						</p:column>
+						
+						<p:column headerText="Número de cuenta destino"
+							filterBy="#{transferencia.cuentasByCueNumDestino.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.cuentasByCueNumDestino.cueNumero}" />
+						</p:column>
+
+						<p:column headerText="Valor" filterBy="#{transferencia.transMonto}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transMonto}" />
+						</p:column>
+
+						<p:column headerText="Descripcion"
+							filterBy="#{transferencia.transDescripcion}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transDescripcion}" />
+						</p:column>
+
+						<p:column headerText="Fecha" filterBy="#{transferencia.transFecha}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transFecha}" />
+						</p:column>
+					</p:dataTable>
+
+				</p:panel>
+
 			</p:tab>
+			
+			
+			
+			
+			
+			
+
+			<p:tab title="Transacciones por cuenta">
+				
+
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:outputLabel value="Id del cliente" />
+					<p:inputText binding="#{consultasView.txtIdentificaciones3}">
+						<p:ajax listener="#{consultasView.txtIdentificacionListener3}"
+							update="panel4"></p:ajax>
+					</p:inputText>
+
+					<p:outputLabel for="popup" value="Fecha inicial: " />
+					<p:calendar id="inline" value="#{consultasView.dateInicialCuenta}" />
+
+					<p:outputLabel for="popup" value="Fecha final: " />
+					<p:calendar id="popup" value="#{consultasView.dateFinalCuenta}" />
+
+					<p:outputLabel for="@next" value="Consignación: " />
+					<p:selectBooleanCheckbox
+						value="#{consultasView.cuentaConsignacion}" />
+
+					<p:outputLabel for="@next" value="Retiro: " />
+					<p:selectBooleanCheckbox value="#{consultasView.cuentaRetiro}" />
+
+					<p:outputLabel for="@next" value="Transferencia: " />
+					<p:selectBooleanCheckbox
+						value="#{consultasView.cuentaTransferencia}" />
+
+
+				</h:panelGrid>
+				<h:panelGrid columns="1" cellpadding="10">
+					<p:commandButton icon="ui-icon-check"
+						binding="#{consultasView.btnConsultarEnCuenta}" disabled="false"
+						id="btnCrear" action="#{consultasView.consultarEnCuenta}"
+						value="Consultar" update="frmConsultas" />
+
+				</h:panelGrid>
+
+
+				<p:panel id="panel4" visible="false"
+					binding="#{consultasView.panel4}">
+					<p:outputLabel value="Tabla consignaciones: "
+						style="text-align:center;" />
+
+
+					<p:dataTable widgetVar="tblConsignacion" var="consignacion"
+						rows="10" paginator="true"
+						value="#{consultasView.lstConsignacionesClientes}"
+						emptyMessage="No hay consignaciones con ese criterio"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Buscar en todos los campos:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tblConsignacion').filter()" style="width:150px"
+									placeholder="Ingresar palabra clave" />
+							</p:outputPanel>
+						</f:facet>
+						<p:column filterBy="#{consignacion.id.conCodigo}"
+							headerText="Id de la consignacion" filterMatchMode="contains">
+							<h:outputText value="#{consignacion.id.conCodigo}" />
+						</p:column>
+
+
+
+						<p:column headerText="Número de cuenta"
+							filterBy="#{consignacion.id.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{consignacion.id.cueNumero}" />
+						</p:column>
+
+						<p:column headerText="Valor" filterBy="#{consignacion.conValor}"
+							filterMatchMode="contains">
+							<h:outputText value="#{consignacion.conValor}" />
+						</p:column>
+
+						<p:column headerText="Descripcion"
+							filterBy="#{consignacion.conDescripcion}"
+							filterMatchMode="contains">
+							<h:outputText value="#{consignacion.conDescripcion}" />
+						</p:column>
+
+						<p:column headerText="Fecha" filterBy="#{consignacion.conFecha}"
+							filterMatchMode="contains">
+							<h:outputText value="#{consignacion.conFecha}" />
+						</p:column>
+					</p:dataTable>
+
+				</p:panel>
+
+
+				<p:panel id="panel5" visible="false"
+					binding="#{consultasView.panel5}">
+					<p:outputLabel value="Tabla retiros: " style="text-align:center;" />
+
+
+					<p:dataTable widgetVar="tblRetiros" var="retiro" rows="10"
+						paginator="true" value="#{consultasView.lstRetirosClientes}"
+						emptyMessage="No hay retiros con ese criterio"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Buscar en todos los campos:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tblRetiros').filter()" style="width:150px"
+									placeholder="Ingresar palabra clave" />
+							</p:outputPanel>
+						</f:facet>
+						<p:column filterBy="#{retiros.id.retCodigo}"
+							headerText="Id de la retiros" filterMatchMode="contains">
+							<h:outputText value="#{retiros.id.retCodigo}" />
+						</p:column>
+
+						<p:column headerText="Número de cuenta"
+							filterBy="#{retiros.id.cueNumero}" filterMatchMode="contains">
+							<h:outputText value="#{retiros.id.cueNumero}" />
+						</p:column>
+
+						<p:column headerText="Valor" filterBy="#{retiros.retValor}"
+							filterMatchMode="contains">
+							<h:outputText value="#{retiros.retValor}" />
+						</p:column>
+
+						<p:column headerText="Descripcion"
+							filterBy="#{retiros.retDescripcion}" filterMatchMode="contains">
+							<h:outputText value="#{retiros.retDescripcion}" />
+						</p:column>
+
+						<p:column headerText="Fecha" filterBy="#{retiros.retFecha}"
+							filterMatchMode="contains">
+							<h:outputText value="#{retiros.retFecha}" />
+						</p:column>
+
+					</p:dataTable>
+
+				</p:panel>
+
+
+				<p:panel id="panel6" visible="false"
+					binding="#{consultasView.panel6}">
+					<p:outputLabel value="Tabla transferencias: " style="text-align:center;" />
+
+
+					<p:dataTable widgetVar="tblTransferencia" var="transferencia" rows="10"
+						paginator="true" value="#{consultasView.lstTransferenciasCuentas}"
+						emptyMessage="No hay transferencias con ese criterio"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Buscar en todos los campos:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tblTransferencia').filter()" style="width:150px"
+									placeholder="Ingresar palabra clave" />
+							</p:outputPanel>
+						</f:facet>
+						
+						
+						<p:column filterBy="#{transferencia.transCodigo}"
+							headerText="Id de la transferencia" filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transCodigo}" />
+						</p:column>
+
+
+
+						<p:column headerText="Número de cuenta origen"
+							filterBy="#{transferencia.cuentasByCueNumOrigen.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.cuentasByCueNumOrigen.cueNumero}" />
+						</p:column>
+						
+						<p:column headerText="Número de cuenta destino"
+							filterBy="#{transferencia.cuentasByCueNumDestino.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.cuentasByCueNumDestino.cueNumero}" />
+						</p:column>
+
+						<p:column headerText="Valor" filterBy="#{transferencia.transMonto}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transMonto}" />
+						</p:column>
+
+						<p:column headerText="Descripcion"
+							filterBy="#{transferencia.transDescripcion}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transDescripcion}" />
+						</p:column>
+
+						<p:column headerText="Fecha" filterBy="#{transferencia.transFecha}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transFecha}" />
+						</p:column>
+					</p:dataTable>
+
+				</p:panel>
+
+			</p:tab>
+
+
 
 
 		</p:tabView>

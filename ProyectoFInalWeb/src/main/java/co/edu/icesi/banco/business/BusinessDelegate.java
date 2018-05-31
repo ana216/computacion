@@ -1,5 +1,6 @@
 package co.edu.icesi.banco.business;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,6 +198,12 @@ public class BusinessDelegate implements IBusinessDelegate {
 	public List<Cuentas> findAllCentasDeUnCliente(Long cliId) throws Exception {
 		// TODO Auto-generated method stub
 		return cuentasLogic.findAllActiveCuentasPorCliente(cliId);
+	}
+
+	@Override
+	public List<Consignaciones> findConsignacionesPorClienteYFecha(Long cliId, Date fechaIni, Date fechaFin)throws Exception {
+		// TODO Auto-generated method stub
+		return consignacionLogic.findConsignacionesPorClienteYFecha(cliId, fechaIni, fechaFin);
 	}
 
 	
