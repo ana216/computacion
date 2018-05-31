@@ -1,0 +1,157 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+
+	<h1>Transferencias</h1>
+	
+
+
+</h:head>
+
+<h:body>
+	<h:form id="frmTransferencia">
+		<p:tabView>
+
+
+			<p:tab title="Realizar consignación">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Usuario que realiza la consignación" />
+
+					<p:selectOneMenu binding="#{transferenciasView.sUsuarios}"
+						required="true" label="Usuario">
+						<f:selectItem itemLabel="Seleccionar uno" itemValue="-1"
+							noSelectionOption="true" />
+						<f:selectItems value="#{transferenciasView.lstUsuariosItem}" />
+						<p:ajax listener="#{transferenciasView.txtUsuarioListener()}"
+							update="frmTransferencia,growl,"></p:ajax>
+
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Número de cuenta origen" />
+					<p:inputMask binding="#{transferenciasView.txtNumCuentaOrigen}"
+						mask="9999-9999-9999">
+						<p:ajax listener="#{transferenciasView.txtNumCuentaListenerOrigen}"
+							update="frmTransferencia,growl"></p:ajax>
+
+					</p:inputMask>
+					
+					<p:outputLabel value="Número de cuenta destino" />
+					<p:inputMask binding="#{transferenciasView.txtNumCuentaDestino}"
+						mask="9999-9999-9999">
+						<p:ajax listener="#{transferenciasView.txtNumCuentaListenerDestino}"
+							update="frmTransferencia,growl"></p:ajax>
+
+					</p:inputMask>
+
+
+
+
+				</h:panelGrid>
+				
+				<p:panel binding="#{transferenciasView.panel1}">
+					<h:panelGrid columns="2">
+
+						<p:outputLabel value="Valor consignación" />
+
+						<p:inputNumber value="#{transferenciasView.txtValor}"
+							decimalPlaces="2">
+
+						</p:inputNumber>
+
+						<p:outputLabel value="Descripción" />
+
+						<p:inputTextarea binding="#{transferenciasView.txtDescripcion}"
+							rows="6" cols="33" />
+
+
+					</h:panelGrid>
+					<h:panelGrid columns="5">
+						<p:commandButton icon="ui-icon-check"
+							binding="#{transferenciasView.btnRealizarTransferencias}"
+							disabled="false" id="btnCrear"
+							action="#{transferenciasView.action_realizar_transferencia}" value="Realizar transferencia"
+							update="frmTransferencia, growl"
+							oncomplete="PF('tblTransferencia').filter()" />
+
+					</h:panelGrid>
+				</p:panel>
+				<p:growl id="growl" life="2000" />
+
+
+
+
+
+			</p:tab>
+
+			<p:tab title="Consultar transferencias">
+
+				<p:panel>
+
+					<p:dataTable widgetVar="tblTransferencia" var="transferencia"
+						rows="10" paginator="true"
+						value="#{transferenciasView.lstTransferencias}"
+						emptyMessage="No hay transferencias con ese criterio"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Busca en todos los campos:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tblTransferencia').filter()" style="width:150px"
+									placeholder="Ingresa palabra clave" />
+							</p:outputPanel>
+						</f:facet>
+
+						<p:column filterBy="#{transferencia.transCodigo}"
+							headerText="Id de la transferencia" filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transCodigo}" />
+						</p:column>
+
+
+
+						<p:column headerText="Número de cuenta origen"
+							filterBy="#{transferencia.cuentasByCueNumOrigen.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.cuentasByCueNumOrigen.cueNumero}" />
+						</p:column>
+						
+						<p:column headerText="Número de cuenta destino"
+							filterBy="#{transferencia.cuentasByCueNumDestino.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.cuentasByCueNumDestino.cueNumero}" />
+						</p:column>
+
+						<p:column headerText="Valor" filterBy="#{transferencia.transMonto}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transMonto}" />
+						</p:column>
+
+						<p:column headerText="Descripcion"
+							filterBy="#{transferencia.transDescripcion}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transDescripcion}" />
+						</p:column>
+
+						<p:column headerText="Fecha" filterBy="#{transferencia.transFecha}"
+							filterMatchMode="contains">
+							<h:outputText value="#{transferencia.transFecha}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</p:tab>
+		</p:tabView>
+	</h:form>
+</h:body>
+
+
+
+
+
+
+</html>

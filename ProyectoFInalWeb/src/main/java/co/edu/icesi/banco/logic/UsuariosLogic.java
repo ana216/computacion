@@ -52,9 +52,15 @@ public class UsuariosLogic implements IUsuarioLogic {
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List<Usuarios> findAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Usuarios> usuarios = usuariosDAO.findAll();
+
+		// validamos que existan clientes
+		if (usuarios.size() < 1)
+			throw new Exception("No existen usuarios");
+
+		return usuarios;
 	}
 
 }

@@ -1,0 +1,141 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<h1>Retiros</h1>
+
+
+</h:head>
+
+<h:body>
+	<h:form id="frmRetiros">
+		<p:tabView>
+
+
+			<p:tab title="Realizar retiro">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Usuario que realiza el retiro" />
+
+					<p:selectOneMenu binding="#{retirosView.sUsuarios}"
+						required="true" label="Usuario">
+						<f:selectItem itemLabel="Seleccionar uno" itemValue="-1"
+							noSelectionOption="true" />
+						<f:selectItems value="#{retirosView.lstUsuariosItem}" />
+						<p:ajax listener="#{retirosView.txtUsuarioListener()}"
+							update="frmRetiros,growl,"></p:ajax>
+
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Número de cuenta" />
+					<p:inputMask binding="#{retirosView.txtNumCuenta}"
+						mask="9999-9999-9999">
+						<p:ajax listener="#{retirosView.txtNumCuentaListener()}"
+							update="frmRetiros,growl"></p:ajax>
+
+					</p:inputMask>
+
+
+
+
+				</h:panelGrid>
+				
+				<p:panel visible="false" binding="#{retirosView.panel1}">
+					<h:panelGrid columns="2">
+
+						<p:outputLabel value="Valor retiro" />
+
+						<p:inputNumber value="#{retirosView.txtValor}"
+							decimalPlaces="2">
+
+						</p:inputNumber>
+
+						<p:outputLabel value="Descripción" />
+
+						<p:inputTextarea binding="#{retirosView.txtDescripcion}"
+							rows="6" cols="33" />
+
+
+					</h:panelGrid>
+					<h:panelGrid columns="5">
+						<p:commandButton icon="ui-icon-check"
+							binding="#{retirosView.btnRealizarRetiros}"
+							disabled="false" id="btnCrear"
+							action="#{retirosView.action_realizar_retiros()}" value="Realizar retiro"
+							update="frmRetiros, growl"
+							oncomplete="PF('tblRetiros').filter()" />
+
+					</h:panelGrid>
+				</p:panel>
+				<p:growl id="growl" life="2000" />
+
+
+
+
+
+			</p:tab>
+
+			<p:tab title="Consultar retiros">
+
+				<p:panel>
+
+					<p:dataTable widgetVar="tblRetiros" var="retiros"
+						rows="10" paginator="true"
+						value="#{retirosView.lstRetiros}"
+						emptyMessage="No hay retiros ret ese criterio"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Busca en todos los campos:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tblRetiros').filter()" style="width:150px"
+									placeholder="Ingresa palabra clave" />
+							</p:outputPanel>
+						</f:facet>
+
+						<p:column filterBy="#{retiros.id.retCodigo}"
+							headerText="Id de la retiros" filterMatchMode="contains">
+							<h:outputText value="#{retiros.id.retCodigo}" />
+						</p:column>
+
+
+
+						<p:column headerText="Número de cuenta"
+							filterBy="#{retiros.id.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{retiros.id.cueNumero}" />
+						</p:column>
+
+						<p:column headerText="Valor" filterBy="#{retiros.retValor}"
+							filterMatchMode="contains">
+							<h:outputText value="#{retiros.retValor}" />
+						</p:column>
+
+						<p:column headerText="Descripcion"
+							filterBy="#{retiros.retDescripcion}"
+							filterMatchMode="contains">
+							<h:outputText value="#{retiros.retDescripcion}" />
+						</p:column>
+
+						<p:column headerText="Fecha" filterBy="#{retiros.retFecha}"
+							filterMatchMode="contains">
+							<h:outputText value="#{retiros.retFecha}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</p:tab>
+		</p:tabView>
+	</h:form>
+</h:body>
+
+
+
+
+
+
+</html>

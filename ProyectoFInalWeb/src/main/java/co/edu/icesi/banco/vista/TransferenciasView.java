@@ -1,6 +1,5 @@
 package co.edu.icesi.banco.vista;
 
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,26 +19,26 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 import co.edu.icesi.banco.business.IBusinessDelegate;
-import co.edu.icesi.banco.modelo.Consignaciones;
-import co.edu.icesi.banco.modelo.ConsignacionesId;
 import co.edu.icesi.banco.modelo.Cuentas;
+import co.edu.icesi.banco.modelo.Transferencias;
+
 import co.edu.icesi.banco.modelo.Usuarios;
 
 @ManagedBean
 @ViewScoped
-public class ConsignacionesView {
-
-	private InputMask txtNumCuenta;
-	private BigDecimal txtValor;
-
+public class TransferenciasView {
+	
+	private InputMask txtNumCuentaOrigen;
+	private InputMask txtNumCuentaDestino;
+	private BigDecimal txtValor = new BigDecimal("0");
 	private InputTextarea txtDescripcion;
 
 	private SelectOneMenu sUsuarios;
 	private List<SelectItem> lstUsuariosItem;
 
-	private List<Consignaciones> lstConsignaciones;
+	private List<Transferencias> lstTransferencias;
 
-	private CommandButton btnRealizarConsignacion;
+	private CommandButton btnRealizarTransferencias;
 	private Panel panel1;
 	private Panel panel2;
 
@@ -54,13 +53,7 @@ public class ConsignacionesView {
 		this.businessDelegate = businessDelegate;
 	}
 
-	public InputMask getTxtNumCuenta() {
-		return txtNumCuenta;
-	}
 
-	public void setTxtNumCuenta(InputMask txtNumCuenta) {
-		this.txtNumCuenta = txtNumCuenta;
-	}
 
 	public BigDecimal getTxtValor() {
 		return txtValor;
@@ -108,10 +101,10 @@ public class ConsignacionesView {
 		this.lstUsuariosItem = lstUsuariosItem;
 	}
 
-	public List<Consignaciones> getLstConsignaciones() {
-		if (lstConsignaciones== null) {
+	public List<Transferencias> getLstTransferencias() {
+		if (lstTransferencias== null) {
 			try {
-				lstConsignaciones = businessDelegate.findAllConsignaciones();
+				lstTransferencias = businessDelegate.findAllTransferencias();
 			} catch (Exception e) {
 
 				FacesContext.getCurrentInstance().addMessage("",
@@ -120,19 +113,19 @@ public class ConsignacionesView {
 			}
 		}
 
-		return lstConsignaciones;
+		return lstTransferencias;
 	}
 
-	public void setLstConsignaciones(List<Consignaciones> lstConsignaciones) {
-		this.lstConsignaciones = lstConsignaciones;
+	public void setLstTransferencias(List<Transferencias> lstTransferencias) {
+		this.lstTransferencias = lstTransferencias;
 	}
 
-	public CommandButton getBtnRealizarConsignacion() {
-		return btnRealizarConsignacion;
+	public CommandButton getBtnRealizarTransferencias() {
+		return btnRealizarTransferencias;
 	}
 
-	public void setBtnRealizarConsignacion(CommandButton btnRealizarConsignacion) {
-		this.btnRealizarConsignacion = btnRealizarConsignacion;
+	public void setBtnRealizarTransferencias(CommandButton btnRealizarTransferencias) {
+		this.btnRealizarTransferencias = btnRealizarTransferencias;
 	}
 
 	public Panel getPanel1() {
@@ -169,18 +162,18 @@ public class ConsignacionesView {
 		}
 	}
 
-	public void txtNumCuentaListener() {
+	public void txtNumCuentaListenerOrigen() {
 		try {
-			if (txtNumCuenta == null 
-					|| txtNumCuenta.getValue() == null
-					|| txtNumCuenta.getValue().toString().trim().equals("")
+			if (txtNumCuentaOrigen == null 
+					|| txtNumCuentaOrigen.getValue() == null
+					|| txtNumCuentaOrigen.getValue().toString().trim().equals("")
 					) {
 				panel1.setVisible(false);
 				throw new Exception("Debe ingresar un número de cuenta válido"+"v");
 
 			}
 			
-			Cuentas cuenta = businessDelegate.findByIdCuenta(txtNumCuenta.getValue().toString());
+			Cuentas cuenta = businessDelegate.findByIdCuenta(txtNumCuentaOrigen.getValue().toString());
 			if (cuenta == null) {
 
 				throw new Exception("Debe ingresar un número de cuenta que exista");
@@ -193,7 +186,7 @@ public class ConsignacionesView {
 
 				FacesContext.getCurrentInstance().addMessage("",
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
-								"Puede comenzar a realizar una consignación al número de cuenta: "
+								"Puede comenzar a realizar un retiro al número de cuenta: "
 										+ cuenta.getCueNumero() ,
 								""));
 
@@ -209,34 +202,82 @@ public class ConsignacionesView {
 
 		}
 	}
+	
+	
+	
+	
+	public void txtNumCuentaListenerDestino() {
+		try {
+			if (txtNumCuentaOrigen == null 
+					|| txtNumCuentaDestino.getValue() == null
+					|| txtNumCuentaDestino.getValue().toString().trim().equals("")
+					) {
+				panel1.setVisible(false);
+				throw new Exception("Debe ingresar un número de cuenta válido");
 
-	public String action_realizar_consignacion() {
+			}
+			
+			Cuentas cuenta = businessDelegate.findByIdCuenta(txtNumCuentaDestino.getValue().toString());
+			if (cuenta == null) {
+
+				throw new Exception("Debe ingresar un número de cuenta que exista");
+			}
+			if (cuenta.getCueActiva().trim().equalsIgnoreCase("N")) {
+
+				throw new Exception("Debe ingresar una cuenta que esté activa");
+
+			} else {
+
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Puede comenzar a realizar un retiro al número de cuenta: "
+										+ cuenta.getCueNumero() ,
+								""));
+
+				
+
+			}
+			
+		} catch (Exception e) {
+		
+			FacesContext.getCurrentInstance().addMessage("",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+			
+
+		}
+	}
+	
+	
+
+	public String action_realizar_transferencia() {
 
 		try {
 
 			if (txtDescripcion != null && txtDescripcion.getValue() != null
 					&& !txtDescripcion.getValue().toString().trim().equals("")) {
 
-				Cuentas cuenta = businessDelegate.findByIdCuenta(txtNumCuenta.getValue().toString());
+				Cuentas cuentaOrigen = businessDelegate.findByIdCuenta(txtNumCuentaOrigen.getValue().toString());
+				Cuentas cuentaDestino = businessDelegate.findByIdCuenta(txtNumCuentaDestino.getValue().toString());
 				Usuarios usuario = businessDelegate.findByIdUsuario(Long.parseLong(sUsuarios.getValue().toString()));
-				Consignaciones consignacion = new Consignaciones();
-				ConsignacionesId consignacionesId = new ConsignacionesId();
-				consignacionesId.setConCodigo(0);
-				consignacionesId.setCueNumero(cuenta.getCueNumero());
+				Transferencias transferencias = new Transferencias();
+				
+			
 
-				consignacion.setId(consignacionesId);
-				consignacion.setConHabilitado("S");
-				consignacion.setCuentas(cuenta);
-				consignacion.setUsuarios(usuario);
-				consignacion.setConFecha(new Date());
-				consignacion.setConValor(txtValor);
-				consignacion.setConDescripcion(txtDescripcion.getValue().toString());
-				businessDelegate.saveConsignacion(consignacion);
+				transferencias.setTransCodigo(0);;
+				transferencias.setTransHabilitado("S");
+				transferencias.setCuentasByCueNumOrigen(cuentaOrigen);
+				transferencias.setCuentasByCueNumDestino(cuentaDestino);
+				transferencias.setUsuarios(usuario);
+				transferencias.setTransFecha(new Date());
+				transferencias.setTransMonto(txtValor);
+				transferencias.setTransDescripcion(txtDescripcion.getValue().toString());
+				
+				businessDelegate.saveTransferencias(transferencias);
 
-				lstConsignaciones=null;
+				lstTransferencias=null;
 				action_limpiar();
 				FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Se realizo la consignación satisfactoriamente", ""));
+						"Se realizo el retiro satisfactoriamente", ""));
 
 			} else {
 
@@ -249,6 +290,7 @@ public class ConsignacionesView {
 			FacesContext.getCurrentInstance().addMessage("",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage() , ""));
 
+			System.out.println(e.getMessage());
 		}
 		return "";
 	}
@@ -256,12 +298,29 @@ public class ConsignacionesView {
 	public String action_limpiar() {
 
 		txtValor = new BigDecimal("0");
-		txtNumCuenta.resetValue();
+		txtNumCuentaOrigen.resetValue();
+		txtNumCuentaDestino.resetValue();
 		txtDescripcion.resetValue();
 
 		sUsuarios.resetValue();
 
 		return "";
+	}
+
+	public InputMask getTxtNumCuentaOrigen() {
+		return txtNumCuentaOrigen;
+	}
+
+	public void setTxtNumCuentaOrigen(InputMask txtNumCuentaOrigen) {
+		this.txtNumCuentaOrigen = txtNumCuentaOrigen;
+	}
+
+	public InputMask getTxtNumCuentaDestino() {
+		return txtNumCuentaDestino;
+	}
+
+	public void setTxtNumCuentaDestino(InputMask txtNumCuentaDestino) {
+		this.txtNumCuentaDestino = txtNumCuentaDestino;
 	}
 
 }

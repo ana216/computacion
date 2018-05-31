@@ -20,41 +20,31 @@
 					<p:outputLabel value="Usuario que realiza la consignación" />
 
 					<p:selectOneMenu binding="#{consignacionesView.sUsuarios}"
-						required="true" label="Text 3">
+						required="true" label="Usuario">
 						<f:selectItem itemLabel="Seleccionar uno" itemValue="-1"
 							noSelectionOption="true" />
 						<f:selectItems value="#{consignacionesView.lstUsuariosItem}" />
-						<p:ajax
-							listener="#{consignacionesView.txtClienteIdentificacionListener}"
-							update="frmConsignacion,growl"></p:ajax>
+						<p:ajax listener="#{consignacionesView.txtUsuarioListener()}"
+							update="frmConsignacion,growl,"></p:ajax>
 
 					</p:selectOneMenu>
 
 
-					<p:outputLabel
-						value="Id del cliente propietario de la cuenta a consignar" />
-
-					<p:inputText binding="#{consignacionesView.txtIdCliente}">
-						<p:ajax
-							listener="#{consignacionesView.txtClienteIdentificacionListener}"
+					<p:outputLabel value="Número de cuenta" />
+					<p:inputMask binding="#{consignacionesView.txtNumCuenta}"
+						mask="9999-9999-9999">
+						<p:ajax listener="#{consignacionesView.txtNumCuentaListener()}"
 							update="frmConsignacion,growl"></p:ajax>
 
-					</p:inputText>
+					</p:inputMask>
+
+
+
 
 				</h:panelGrid>
+				
 				<p:panel visible="false" binding="#{consignacionesView.panel1}">
 					<h:panelGrid columns="2">
-
-						<p:outputLabel value="Número de cuenta" />
-
-						<p:selectOneMenu binding="#{consignacionesView.sCuentas}"
-							required="true" label="Text 3">
-							<f:selectItem itemLabel="Seleccionar uno" itemValue="-1"
-								noSelectionOption="true" />
-							<f:selectItems value="#{consignacionesView.lstCuentasItem}" />
-
-						</p:selectOneMenu>
-
 
 						<p:outputLabel value="Valor consignación" />
 
@@ -62,41 +52,40 @@
 							decimalPlaces="2">
 
 						</p:inputNumber>
-						
+
 						<p:outputLabel value="Descripción" />
 
-						 <p:inputTextarea binding="#{consignacionesView.txtDescripcion}"rows="6" cols="33" />
+						<p:inputTextarea binding="#{consignacionesView.txtDescripcion}"
+							rows="6" cols="33" />
 
-						</p:inputNumber>
 
-
-				
+					</h:panelGrid>
+					<h:panelGrid columns="5">
+						<p:commandButton icon="ui-icon-check"
+							binding="#{consignacionesView.btnRealizarConsignacion}"
+							disabled="false" id="btnCrear"
+							action="#{consignacionesView.action_realizar_consignacion()}" value="Realizar consignación"
+							update="frmConsignacion, growl"
+							oncomplete="PF('tblConsignacion').filter()" />
 
 					</h:panelGrid>
 				</p:panel>
 				<p:growl id="growl" life="2000" />
 
 
-				<p:growl id="message" showDetail="true" />
 
 
 
-				<h:panelGrid columns="5">
-					<p:commandButton icon="ui-icon-check"
-						binding="#{consignacionesView.btnRealizarConsignacion}" disabled="false" id="btnCrear"
-						action="#{cuentaView.action_crear}" value="Realizar consignación"
-						update="frmConsignacion, growl" oncomplete="PF('tblConsignacion').filter()" />
-					
-				</h:panelGrid>
 			</p:tab>
 
-			<p:tab title="Gestionar cuenta">
+			<p:tab title="Consultar consignaciones">
 
 				<p:panel>
 
-					<p:dataTable widgetVar="tblCliente2" var="cuenta" rows="10"
-						paginator="true" value="#{cuentaView.lstCuentas}"
-						emptyMessage="No hay clientes con ese criterio"
+					<p:dataTable widgetVar="tblConsignacion" var="consignacion"
+						rows="10" paginator="true"
+						value="#{consignacionesView.lstConsignaciones}"
+						emptyMessage="No hay consignaciones con ese criterio"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15">
 
@@ -104,26 +93,38 @@
 							<p:outputPanel>
 								<h:outputText value="Busca en todos los campos:" />
 								<p:inputText id="globalFilter"
-									onkeyup="PF('tblCliente2').filter()" style="width:150px"
+									onkeyup="PF('tblConsignacion').filter()" style="width:150px"
 									placeholder="Ingresa palabra clave" />
 							</p:outputPanel>
 						</f:facet>
 
-						<p:column filterBy="#{cuenta.clientes.cliId}"
-							headerText="Id del cliente" filterMatchMode="contains">
-							<h:outputText value="#{cuenta.clientes.cliId}" />
+						<p:column filterBy="#{consignacion.id.conCodigo}"
+							headerText="Id de la consignacion" filterMatchMode="contains">
+							<h:outputText value="#{consignacion.id.conCodigo}" />
 						</p:column>
 
 
 
 						<p:column headerText="Número de cuenta"
-							filterBy="#{cuenta.cueNumero}" filterMatchMode="contains">
-							<h:outputText value="#{cuenta.cueNumero}" />
+							filterBy="#{consignacion.id.cueNumero}"
+							filterMatchMode="contains">
+							<h:outputText value="#{consignacion.id.cueNumero}" />
 						</p:column>
 
-						<p:column headerText="Saldo" filterBy="#{cuenta.cueSaldo}"
+						<p:column headerText="Valor" filterBy="#{consignacion.conValor}"
 							filterMatchMode="contains">
-							<h:outputText value="#{cuenta.cueSaldo}" />
+							<h:outputText value="#{consignacion.conValor}" />
+						</p:column>
+
+						<p:column headerText="Descripcion"
+							filterBy="#{consignacion.conDescripcion}"
+							filterMatchMode="contains">
+							<h:outputText value="#{consignacion.conDescripcion}" />
+						</p:column>
+
+						<p:column headerText="Fecha" filterBy="#{consignacion.conFecha}"
+							filterMatchMode="contains">
+							<h:outputText value="#{consignacion.conFecha}" />
 						</p:column>
 					</p:dataTable>
 				</p:panel>

@@ -1,6 +1,5 @@
 package co.edu.icesi.banco.vista;
 
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,15 +19,16 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 import co.edu.icesi.banco.business.IBusinessDelegate;
-import co.edu.icesi.banco.modelo.Consignaciones;
-import co.edu.icesi.banco.modelo.ConsignacionesId;
+
 import co.edu.icesi.banco.modelo.Cuentas;
+import co.edu.icesi.banco.modelo.Retiros;
+import co.edu.icesi.banco.modelo.RetirosId;
 import co.edu.icesi.banco.modelo.Usuarios;
+
 
 @ManagedBean
 @ViewScoped
-public class ConsignacionesView {
-
+public class RetirosView {
 	private InputMask txtNumCuenta;
 	private BigDecimal txtValor;
 
@@ -37,9 +37,9 @@ public class ConsignacionesView {
 	private SelectOneMenu sUsuarios;
 	private List<SelectItem> lstUsuariosItem;
 
-	private List<Consignaciones> lstConsignaciones;
+	private List<Retiros> lstRetiros;
 
-	private CommandButton btnRealizarConsignacion;
+	private CommandButton btnRealizarRetiros;
 	private Panel panel1;
 	private Panel panel2;
 
@@ -108,10 +108,10 @@ public class ConsignacionesView {
 		this.lstUsuariosItem = lstUsuariosItem;
 	}
 
-	public List<Consignaciones> getLstConsignaciones() {
-		if (lstConsignaciones== null) {
+	public List<Retiros> getLstRetiros() {
+		if (lstRetiros== null) {
 			try {
-				lstConsignaciones = businessDelegate.findAllConsignaciones();
+				lstRetiros = businessDelegate.findAllRetiros();
 			} catch (Exception e) {
 
 				FacesContext.getCurrentInstance().addMessage("",
@@ -120,19 +120,19 @@ public class ConsignacionesView {
 			}
 		}
 
-		return lstConsignaciones;
+		return lstRetiros;
 	}
 
-	public void setLstConsignaciones(List<Consignaciones> lstConsignaciones) {
-		this.lstConsignaciones = lstConsignaciones;
+	public void setLstRetiros(List<Retiros> lstRetiros) {
+		this.lstRetiros = lstRetiros;
 	}
 
-	public CommandButton getBtnRealizarConsignacion() {
-		return btnRealizarConsignacion;
+	public CommandButton getBtnRealizarRetiros() {
+		return btnRealizarRetiros;
 	}
 
-	public void setBtnRealizarConsignacion(CommandButton btnRealizarConsignacion) {
-		this.btnRealizarConsignacion = btnRealizarConsignacion;
+	public void setBtnRealizarRetiros(CommandButton btnRealizarRetiros) {
+		this.btnRealizarRetiros = btnRealizarRetiros;
 	}
 
 	public Panel getPanel1() {
@@ -193,7 +193,7 @@ public class ConsignacionesView {
 
 				FacesContext.getCurrentInstance().addMessage("",
 						new FacesMessage(FacesMessage.SEVERITY_INFO,
-								"Puede comenzar a realizar una consignación al número de cuenta: "
+								"Puede comenzar a realizar un retiro al número de cuenta: "
 										+ cuenta.getCueNumero() ,
 								""));
 
@@ -210,7 +210,7 @@ public class ConsignacionesView {
 		}
 	}
 
-	public String action_realizar_consignacion() {
+	public String action_realizar_retiros() {
 
 		try {
 
@@ -219,24 +219,24 @@ public class ConsignacionesView {
 
 				Cuentas cuenta = businessDelegate.findByIdCuenta(txtNumCuenta.getValue().toString());
 				Usuarios usuario = businessDelegate.findByIdUsuario(Long.parseLong(sUsuarios.getValue().toString()));
-				Consignaciones consignacion = new Consignaciones();
-				ConsignacionesId consignacionesId = new ConsignacionesId();
-				consignacionesId.setConCodigo(0);
-				consignacionesId.setCueNumero(cuenta.getCueNumero());
+				Retiros retiros = new Retiros();
+				RetirosId retirosId = new RetirosId();
+				retirosId.setRetCodigo(0);
+				retirosId.setCueNumero(cuenta.getCueNumero());
 
-				consignacion.setId(consignacionesId);
-				consignacion.setConHabilitado("S");
-				consignacion.setCuentas(cuenta);
-				consignacion.setUsuarios(usuario);
-				consignacion.setConFecha(new Date());
-				consignacion.setConValor(txtValor);
-				consignacion.setConDescripcion(txtDescripcion.getValue().toString());
-				businessDelegate.saveConsignacion(consignacion);
+				retiros.setId(retirosId);
+				retiros.setRetHabilitado("S");
+				retiros.setCuentas(cuenta);
+				retiros.setUsuarios(usuario);
+				retiros.setRetFecha(new Date());
+				retiros.setRetValor(txtValor);
+				retiros.setRetDescripcion(txtDescripcion.getValue().toString());
+				businessDelegate.saveRetiros(retiros);
 
-				lstConsignaciones=null;
+				lstRetiros=null;
 				action_limpiar();
 				FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Se realizo la consignación satisfactoriamente", ""));
+						"Se realizo el retiro satisfactoriamente", ""));
 
 			} else {
 

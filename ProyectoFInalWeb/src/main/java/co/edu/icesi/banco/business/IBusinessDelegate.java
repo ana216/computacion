@@ -5,7 +5,9 @@ import java.util.List;
 import co.edu.icesi.banco.modelo.Clientes;
 import co.edu.icesi.banco.modelo.Consignaciones;
 import co.edu.icesi.banco.modelo.Cuentas;
+import co.edu.icesi.banco.modelo.Retiros;
 import co.edu.icesi.banco.modelo.TiposDocumentos;
+import co.edu.icesi.banco.modelo.Transferencias;
 import co.edu.icesi.banco.modelo.Usuarios;
 
 public interface IBusinessDelegate {
@@ -29,5 +31,12 @@ public interface IBusinessDelegate {
 	public List<TiposDocumentos> findAllTiposDocumentos()throws Exception;
 	public List<Cuentas> findAllActiveCuentas()throws Exception;
 	public Usuarios findByIdUsuario(Long usuCedula)throws Exception;
+	public List<Usuarios> findAllUsuarios()throws Exception;
 	public void saveConsignacion(Consignaciones entity)throws Exception;
+	public List<Consignaciones> findAllConsignaciones()throws Exception;
+	public void saveRetiros(Retiros entity)throws Exception;
+	public List<Retiros> findAllRetiros()throws Exception;
+	public void saveTransferencias(Transferencias entity)throws Exception;
+	public List<Transferencias> findAllTransferencias()throws Exception;
+	
 }

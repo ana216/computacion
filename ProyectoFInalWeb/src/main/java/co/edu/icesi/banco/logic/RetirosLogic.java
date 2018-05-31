@@ -9,33 +9,32 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import co.edu.icesi.banco.dao.IConsignacionesDAO;
 import co.edu.icesi.banco.dao.ICuentasDAO;
-import co.edu.icesi.banco.modelo.Consignaciones;
+import co.edu.icesi.banco.dao.IRetirosDAO;
 import co.edu.icesi.banco.modelo.Cuentas;
+import co.edu.icesi.banco.modelo.Retiros;
 
 @Service
 @Scope("singleton")
-public class ConsignacionLogic implements IConsignacionLogic {
+public class RetirosLogic implements IRetirosLogic {
 
 	@Autowired
-	private IConsignacionesDAO consignacionesDAO;
+	private IRetirosDAO retirosDAO;
 
 	@Autowired
 	private ICuentasDAO cuentasDAO;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(Consignaciones entity) throws Exception {
+	public void save(Retiros entity) throws Exception {
 		// TODO Auto-generated method stub
 		if (entity == null) {
-			throw new Exception("Debe ingresar una consignación");
+			throw new Exception("Debe ingresar un retiro");
 		}
 
 		// Validamos que el id no sea null
 		if (entity.getId() == null) {
-			throw new Exception("Debe ingresar el id de la consignación");
+			throw new Exception("Debe ingresar el id del retiro");
 		}
 
 		// Validamos que el número de la cuenta sea valido
@@ -50,19 +49,19 @@ public class ConsignacionLogic implements IConsignacionLogic {
 		}
 
 		/// validamos que la descripción sea valida
-		if (entity.getConDescripcion() == null || entity.getConDescripcion().trim().equals("")) {
+		if (entity.getRetDescripcion() == null || entity.getRetDescripcion().trim().equals("")) {
 			throw new Exception("La descripción debe ser válida");
 		}
 
 		/// validamos el valor de la consignacion
-		if (entity.getConValor() == null || entity.getConValor().compareTo(new BigDecimal("0")) < 1) {
+		if (entity.getRetValor() == null || entity.getRetValor().compareTo(new BigDecimal("0")) < 1) {
 			throw new Exception("El valor no es válido");
 		}
 
 		// Calculo consecutivo
 		String cueNumero = entity.getId().getCueNumero();
-		List<Consignaciones> cons = consignacionesDAO.findAll();
-		List<Consignaciones> consCuentaNumIgual = new ArrayList<Consignaciones>();
+		List<Retiros> cons = retirosDAO.findAll();
+		List<Retiros> consCuentaNumIgual = new ArrayList<Retiros>();
 		for (int i = 0; i < cons.size(); i++) {
 			if (cons.get(i).getId().getCueNumero().equals(cueNumero)) {
 				consCuentaNumIgual.add(cons.get(i));
@@ -70,24 +69,27 @@ public class ConsignacionLogic implements IConsignacionLogic {
 		}
 		long conId = 1;
 		if (consCuentaNumIgual.size() < 1) {
-			entity.getId().setConCodigo(conId);
+			entity.getId().setRetCodigo(conId);
 		} else {
 			entity.getId()
-					.setConCodigo(consCuentaNumIgual.get(consCuentaNumIgual.size() - 1).getId().getConCodigo() + 1);
+					.setRetCodigo(consCuentaNumIgual.get(consCuentaNumIgual.size() - 1).getId().getRetCodigo() + 1);
 		}
 
 		Cuentas cuenta = cuentasDAO.findById(cueNumero);
-		BigDecimal nuevoValor = cuenta.getCueSaldo().add(entity.getConValor());
+		if (cuenta.getCueSaldo().compareTo(entity.getRetValor()) < 0) {
+			throw new Exception("La cuenta no tiene saldo suficiente");
+		}
+		BigDecimal nuevoValor = cuenta.getCueSaldo().subtract(entity.getRetValor());
 		cuenta.setCueSaldo(nuevoValor);
 
 		cuentasDAO.save(cuenta);
-		consignacionesDAO.save(entity);
+		retirosDAO.save(entity);
 
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void update(Consignaciones entity) throws Exception {
+	public void update(Retiros entity) throws Exception {
 		if (entity == null) {
 			throw new Exception("Debe ingresar una consignación");
 		}
@@ -98,7 +100,7 @@ public class ConsignacionLogic implements IConsignacionLogic {
 		}
 
 		// Validamos que el codigo sea valido
-		if (entity.getId().getConCodigo() == 0) {
+		if (entity.getId().getRetCodigo() == 0) {
 			throw new Exception("Debe ingresar el codigo de la consignación");
 		}
 
@@ -114,43 +116,43 @@ public class ConsignacionLogic implements IConsignacionLogic {
 		}
 
 		/// validamos que la descripción sea valida
-		if (entity.getConDescripcion() == null || entity.getConDescripcion().trim().equals("")) {
+		if (entity.getRetDescripcion() == null || entity.getRetDescripcion().trim().equals("")) {
 			throw new Exception("La descripción debe ser válida");
 		}
 
 		/// validamos el valor de la consignacion
-		if (entity.getConValor() == null || entity.getConValor().compareTo(new BigDecimal("0")) < 1) {
+		if (entity.getRetValor() == null || entity.getRetValor().compareTo(new BigDecimal("0")) < 1) {
 			throw new Exception("El valor no es válido");
 		}
 
-		consignacionesDAO.update(entity);
+		retirosDAO.update(entity);
 
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(Consignaciones entity) throws Exception {
+	public void delete(Retiros entity) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public Consignaciones findById(Long cliId) throws Exception {
+	public Retiros findById(Long cliId) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public List<Consignaciones> findAll() throws Exception {
-		List<Consignaciones> consignaciones = consignacionesDAO.findAll();
+	public List<Retiros> findAll() throws Exception {
+		List<Retiros> retiros = retirosDAO.findAll();
 
 		// validamos que existan clientes
-		if (consignaciones.size() < 1)
-			throw new Exception("No existen consignaciones");
+		if (retiros.size() < 1)
+			throw new Exception("No existen Retiros");
 
-		return consignaciones;
+		return retiros;
 
 	}
 

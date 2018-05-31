@@ -44,8 +44,8 @@ public class UsuariosDAO implements IUsuariosDAO{
 
 	@Override
 	public List<Usuarios> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		String jpql="Select usu from Usuarios usu";
+		return entitymanager.createQuery(jpql).getResultList();
 	}
 
 }

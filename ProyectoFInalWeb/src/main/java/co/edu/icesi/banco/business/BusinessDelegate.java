@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 import co.edu.icesi.banco.logic.IClienteLogic;
 import co.edu.icesi.banco.logic.IConsignacionLogic;
 import co.edu.icesi.banco.logic.ICuentasLogic;
+import co.edu.icesi.banco.logic.IRetirosLogic;
 import co.edu.icesi.banco.logic.ITiposDocumentosLogic;
+import co.edu.icesi.banco.logic.ITransferenciaLogic;
 import co.edu.icesi.banco.logic.IUsuarioLogic;
 import co.edu.icesi.banco.modelo.Clientes;
 import co.edu.icesi.banco.modelo.Consignaciones;
 import co.edu.icesi.banco.modelo.Cuentas;
+import co.edu.icesi.banco.modelo.Retiros;
 import co.edu.icesi.banco.modelo.TiposDocumentos;
+import co.edu.icesi.banco.modelo.Transferencias;
 import co.edu.icesi.banco.modelo.Usuarios;
 
 
@@ -35,6 +39,12 @@ public class BusinessDelegate implements IBusinessDelegate {
 	
 	@Autowired
 	private IConsignacionLogic consignacionLogic;
+	
+	@Autowired
+	private IRetirosLogic retirosLogic;
+	
+	@Autowired
+	private ITransferenciaLogic transferenciasLogic;
 	
 	@Override
 	public void saveCuenta(Cuentas entity) throws Exception {
@@ -146,6 +156,41 @@ public class BusinessDelegate implements IBusinessDelegate {
 	public void saveConsignacion(Consignaciones entity) throws Exception {
 		consignacionLogic.save(entity);
 		
+	}
+
+	@Override
+	public List<Usuarios> findAllUsuarios() throws Exception {
+		// TODO Auto-generated method stub
+		return usuariosLogic.findAll();
+	}
+
+	@Override
+	public List<Consignaciones> findAllConsignaciones() throws Exception {
+		// TODO Auto-generated method stub
+		return consignacionLogic.findAll();
+	}
+
+	@Override
+	public void saveRetiros(Retiros entity) throws Exception {
+		retirosLogic.save(entity);
+		
+	}
+
+	@Override
+	public List<Retiros> findAllRetiros() throws Exception {
+		return retirosLogic.findAll();
+	}
+
+	@Override
+	public void saveTransferencias(Transferencias entity) throws Exception {
+		transferenciasLogic.save(entity);
+		
+	}
+
+	@Override
+	public List<Transferencias> findAllTransferencias() throws Exception {
+		// TODO Auto-generated method stub
+		return transferenciasLogic.findAll();
 	}
 
 	
