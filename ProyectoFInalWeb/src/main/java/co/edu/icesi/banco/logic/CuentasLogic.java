@@ -169,6 +169,18 @@ public class CuentasLogic implements ICuentasLogic {
 
 		return cuentas;
 	}
+
+	@Override
+	public List<Cuentas> findAllActiveCuentasPorCliente(long cli) throws Exception {
+
+		List<Cuentas> cuentas = cuentasDAO.findAllActiveCuentasDeUnCliente(cli);
+
+		// validamos que existan cuentas
+		if (cuentas.size() < 1)
+			throw new Exception("No existen cuentas para ese cliente");
+
+		return cuentas;
+	}
 	
 
 }

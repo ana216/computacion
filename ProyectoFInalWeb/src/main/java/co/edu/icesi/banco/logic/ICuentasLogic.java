@@ -12,5 +12,6 @@ public interface ICuentasLogic {
 	public Cuentas findById(String cueNum)throws Exception;
 	public List<Cuentas> findAll()throws Exception;
 	public List<Cuentas> findAllActiveCuentas() throws Exception;
+	public List<Cuentas> findAllActiveCuentasPorCliente(long cli) throws Exception;
 
 }

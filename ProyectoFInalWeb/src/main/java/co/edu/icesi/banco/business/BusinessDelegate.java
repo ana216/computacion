@@ -193,6 +193,12 @@ public class BusinessDelegate implements IBusinessDelegate {
 		return transferenciasLogic.findAll();
 	}
 
+	@Override
+	public List<Cuentas> findAllCentasDeUnCliente(Long cliId) throws Exception {
+		// TODO Auto-generated method stub
+		return cuentasLogic.findAllActiveCuentasPorCliente(cliId);
+	}
+
 	
 	
 }

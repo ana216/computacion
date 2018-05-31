@@ -50,9 +50,9 @@ public class CuentasDAO implements ICuentasDAO{
 
 	@Override
 	public List<Cuentas> findAllActiveCuentasDeUnCliente(Long cliId) {
-		String jpql="Select cuen from Cuentas cuen"
-				+ "where cuen.cliId = ?1"
-				+ "AND cuen.cue_activa";
+		String jpql="Select cuen from Cuentas cuen "
+				+ "where cuen.clientes.cliId = ?1 "
+				+ "AND cuen.cueActiva ='S'";
 		Query query =entitymanager.createQuery(jpql);
 		query.setParameter(1,cliId);
 		return query.getResultList();

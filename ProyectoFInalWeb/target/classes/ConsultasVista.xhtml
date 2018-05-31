@@ -5,7 +5,7 @@
 
 <h:head>
 
-	<h1>Clientes</h1>
+	<h1>Consultas</h1>
 
 
 
@@ -15,7 +15,8 @@
 </h:head>
 
 <h:body>
-	<h:form id="frmCliente">
+	<h:form id="frmConsultas">
+	<p:growl id="growl" life="2000" />
 
 		<p:tabView>
 
@@ -23,14 +24,14 @@
 			<p:tab title="Consultar cuentas por cliente">
 				<h:panelGrid columns="3" cellpadding="10">
 					<p:outputLabel value="Id del cliente" />
-					<p:inputText binding="#{manejarClientes.txtIdentificaciones}">
-						<p:ajax listener="#{manejarClientes.txtIdentificacionListener}"
-							update="frmCliente"></p:ajax>
+					<p:inputText binding="#{consultasView.txtIdentificaciones}">
+						<p:ajax listener="#{consultasView.txtIdentificacionListener}"
+							update="frmConsultas"></p:ajax>
 					</p:inputText>
-					<h:outputText id="out" value="#{listenerView.text}" />
+					<h:outputText id="out" value="#{consultasView.txtNombre}" />
 
-					<p:dataTable widgetVar="tblCuentasCliente" var="cuentas" rows="10"
-						paginator="true" value="#{manejarClientes.lstClientes}"
+					<p:dataTable widgetVar="tblCuentasCliente" var="cuenta" rows="10"
+						paginator="true" value="#{consultasView.lstCuentas}"
 						emptyMessage="El cliente que desea buscar no tiene cuentas"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15">
@@ -56,11 +57,13 @@
 
 			</p:tab>
 
-			<p:tab title="Gestionar cliente">
+			<p:tab title="Transacciones por cliente">
+			
+			<p:panel visible="false" binding=">
+			
+			</p:panel>
 
-				<p:panel>
-
-					<p:dataTable widgetVar="tblCliente2" var="cliente" rows="10"
+					<p:dataTable widgetVar="tblClienteTransacciones" var="cliente" rows="10"
 						paginator="true" value="#{manejarClientes.lstClientes}"
 						emptyMessage="No hay clientes con ese criterio"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -112,23 +115,23 @@
 							filterMatchMode="contains">
 							<h:outputText value="#{cliente.cliMail}" />
 						</p:column>
-						<!-- 				<p:column> -->
-						<!-- 					<f:facet name="header"> -->
-						<!-- 						<h:outputText value="Botón de editar" /> -->
-						<!-- 					</f:facet> -->
-						<!-- 					<h:commandButton action="#{myBean.editMyData}"> -->
-						<!-- 						<h:outputText value="#{myDataItem.id}" /> -->
-						<!-- 					</h:commandButton> -->
-						<!-- 				</p:column> -->
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Botón de editar" />
+											</f:facet>
+											<h:commandButton action="#{myBean.editMyData}">
+												<h:outputText value="#{myDataItem.id}" />
+											</h:commandButton>
+										</p:column>
 
-						<!-- 				<p:column> -->
-						<!-- 					<f:facet name="header"> -->
-						<!-- 						<h:outputText value="Botón de borrar" /> -->
-						<!-- 					</f:facet> -->
-						<!-- 					<h:commandButton action="#{myBean.editMyData}"> -->
-						<!-- 						<h:outputText value="#{myDataItem.id}" /> -->
-						<!-- 					</h:commandButton> -->
-						<!-- 				</p:column> -->
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="Botón de borrar" />
+											</f:facet>
+											<h:commandButton action="#{myBean.editMyData}">
+												<h:outputText value="#{myDataItem.id}" />
+											</h:commandButton>
+										</p:column>
 					</p:dataTable>
 
 				</p:panel>
@@ -157,17 +160,17 @@
 							footerText="contains" filterMatchMode="contains">
 							<h:outputText value="#{cliente.cliId}" />
 						</p:column>
-						<!-- 						<p:column filterBy="#{cliente.tiposDocumentos}" headerText="Tipo documento" -->
-						<!-- 							 filterMatchMode="contains"> -->
-						<!-- 							<f:facet name="filter"> -->
-						<!-- 								<p:selectOneMenu onchange="PF('tblCliente2').filter()"> -->
-						<!-- 									<f:selectItem itemLabel="Selecciona uno" itemValue="-1" -->
-						<!-- 										noSelectionOption="true" /> -->
-						<!-- 									<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" /> -->
-						<!-- 								</p:selectOneMenu> -->
-						<!-- 							</f:facet> -->
-						<!-- 							<h:outputText value="Cedula" /> -->
-						<!-- 						</p:column> -->
+												<p:column filterBy="#{cliente.tiposDocumentos}" headerText="Tipo documento"
+													 filterMatchMode="contains">
+													<f:facet name="filter">
+														<p:selectOneMenu onchange="PF('tblCliente2').filter()">
+															<f:selectItem itemLabel="Selecciona uno" itemValue="-1"
+																noSelectionOption="true" />
+															<f:selectItems value="#{manejarClientes.lstTiposDocumentosItem}" />
+														</p:selectOneMenu>
+													</f:facet>
+													<h:outputText value="Cedula" />
+												</p:column>
 
 						<p:column headerText="Nombre" filterBy="#{cliente.cliNombre}"
 							filterMatchMode="contains">
@@ -193,13 +196,13 @@
 							<h:outputText value="#{cliente.cliHabilitado}" />
 						</p:column>
 
-						<!-- 						<p:column> -->
-						<!-- 								<h:outputText value="Activacion" /> -->
-						<!-- 						</p:column> -->
+												<p:column>
+														<h:outputText value="Activacion" />
+												</p:column>
 
-						<!-- 						<p:column> -->
-						<!-- 								<h:outputText value="Inactivacion" /> -->
-						<!-- 						</p:column> -->
+												<p:column>
+														<h:outputText value="Inactivacion" />
+												</p:column>
 
 
 

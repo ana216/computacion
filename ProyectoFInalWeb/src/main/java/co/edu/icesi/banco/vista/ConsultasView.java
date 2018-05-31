@@ -10,8 +10,10 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.panel.Panel;
 
 import co.edu.icesi.banco.business.IBusinessDelegate;
+import co.edu.icesi.banco.modelo.Clientes;
 import co.edu.icesi.banco.modelo.Cuentas;
 
 @ManagedBean
@@ -27,6 +29,8 @@ public class ConsultasView {
 	private CommandButton btnConsultar;
 	
 	private List<Cuentas> lstCuentas;
+	
+	private Panel panel1;
 
 	public IBusinessDelegate getBusinessDelegate() {
 		return businessDelegate;
@@ -63,7 +67,14 @@ public class ConsultasView {
 	public List<Cuentas> getLstCuentas() {
 		if (lstCuentas == null) {
 			try {
-				lstCuentas = businessDelegate.findAllActiveCuentas();
+				try {
+					Long a=Long.parseLong(txtIdentificaciones.getValue().toString());
+					
+				}catch (Exception e) {
+					throw new Exception("Id del cliente inválido");
+				}
+				
+				lstCuentas = businessDelegate.findAllCentasDeUnCliente(Long.parseLong(txtIdentificaciones.getValue().toString()));
 			} catch (Exception e) {
 
 				FacesContext.getCurrentInstance().addMessage("",
@@ -77,6 +88,49 @@ public class ConsultasView {
 
 	public void setLstCuentas(List<Cuentas> lstCuentas) {
 		this.lstCuentas = lstCuentas;
+	}
+	
+	public void txtIdentificacionListener() {
+		try {
+			if (txtIdentificaciones == null || txtIdentificaciones.getValue() == null
+					|| txtIdentificaciones.getValue().toString().trim().equals("")) {
+				throw new Exception("Debe ingresar un número de identificación");
+			}
+			Long id = Long.parseLong(txtIdentificaciones.getValue().toString());
+			Clientes cliente = businessDelegate.findByIdClientes(id);
+			if (cliente == null) {
+
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "EL cliente no existe", ""));
+
+
+			}else if(cliente.getCliHabilitado().trim().equalsIgnoreCase("N")){
+				
+			
+				FacesContext.getCurrentInstance().addMessage("",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "EL cliente existe pero está inactivado", ""));
+
+				
+			}else {
+				lstCuentas=null;
+			}
+				
+
+		} catch (Exception e) {
+			
+			FacesContext.getCurrentInstance().addMessage("",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+
+
+		}
+	}
+
+	public Panel getPanel1() {
+		return panel1;
+	}
+
+	public void setPanel1(Panel panel1) {
+		this.panel1 = panel1;
 	}
 
 	

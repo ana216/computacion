@@ -38,5 +38,6 @@ public interface IBusinessDelegate {
 	public List<Retiros> findAllRetiros()throws Exception;
 	public void saveTransferencias(Transferencias entity)throws Exception;
 	public List<Transferencias> findAllTransferencias()throws Exception;
+	public List<Cuentas> findAllCentasDeUnCliente(Long cliId)throws Exception;
 	
 }
