@@ -128,23 +128,30 @@ public class CuentaView {
 
 		try {
 
-			if (txtIdCliente == null || txtIdCliente.getValue() != null
-					|| txtIdCliente.getValue().toString().trim().equals("")) {
+			if (txtIdCliente != null && txtIdCliente.getValue() != null
+					&& !txtIdCliente.getValue().toString().trim().equals("")) {
 				Clientes cliente = businessDelegate
 						.findByIdClientes(Long.parseLong(txtIdCliente.getValue().toString()));
-				Cuentas cuenta = new Cuentas();
-				cuenta.setCueNumero(txtCueNumero.getValue().toString());
-				cuenta.setCueClave(txtCueClave);
-				cuenta.setClientes(cliente);
-				cuenta.setCueActiva("S");
-				cuenta.setCueSaldo(new BigDecimal(txtCuentaSaldo.toString()));
+				if(cliente!=null) {
+					Cuentas cuenta = new Cuentas();
+					cuenta.setCueNumero(txtCueNumero.getValue().toString());
+					cuenta.setCueClave(txtCueClave);
+					cuenta.setClientes(cliente);
+					cuenta.setCueActiva("S");
+					cuenta.setCueSaldo(new BigDecimal(txtCuentaSaldo.toString()));
 
-				businessDelegate.saveCuenta(cuenta);
-				lstCuentas = null;
-				lstCuentasHistoricas = null;
-				action_limpiar();
-				FacesContext.getCurrentInstance().addMessage("",
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se creó la cuenta satisfactoriamente", ""));
+					businessDelegate.saveCuenta(cuenta);
+					lstCuentas = null;
+					lstCuentasHistoricas = null;
+					action_limpiar();
+					FacesContext.getCurrentInstance().addMessage("",
+							new FacesMessage(FacesMessage.SEVERITY_INFO, "Se creó la cuenta satisfactoriamente", ""));
+				}else {
+					FacesContext.getCurrentInstance().addMessage("",
+							new FacesMessage(FacesMessage.SEVERITY_ERROR, "El cliente no existe", ""));
+
+				}
+
 			} else {
 				FacesContext.getCurrentInstance().addMessage("",
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "El id del cliente asociado es inválido", ""));

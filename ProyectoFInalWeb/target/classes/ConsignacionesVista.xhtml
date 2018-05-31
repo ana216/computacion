@@ -62,11 +62,15 @@
 							decimalPlaces="2">
 
 						</p:inputNumber>
+						
+						<p:outputLabel value="Descripción" />
+
+						 <p:inputTextarea binding="#{consignacionesView.txtDescripcion}"rows="6" cols="33" />
+
+						</p:inputNumber>
 
 
-						<p:outputLabel value="Clave" />
-						<p:password id="feedback" value="#{cuentaView.txtCueClave}"
-							feedback="true" />
+				
 
 					</h:panelGrid>
 				</p:panel>
@@ -79,27 +83,10 @@
 
 				<h:panelGrid columns="5">
 					<p:commandButton icon="ui-icon-check"
-						binding="#{cuentaView.btnCrear}" disabled="false" id="btnCrear"
-						action="#{cuentaView.action_crear}" value="Crear"
-						update="frmCuenta, growl" oncomplete="PF('tblCuenta').filter()" />
-					<p:commandButton disabled="true"
-						binding="#{cuentaView.btnModificar}" id="btnModificar"
-						value="Modificar" update="frmCuenta, growl"
-						oncomplete="PF('tblCliente').filter()"
-						action="#{cuentaView.action_modificar}" />
-					<p:commandButton disabled="true"
-						binding="#{cuentaView.btnEliminar}" id="btnBorrar"
-						value="Inactivar" update="frmCuenta, growl"
-						oncomplete="PF('tblCuenta').filter()"
-						action="#{cuentaView.action_inactivar}" />
-					<p:commandButton id="btnLimpiar" binding="#{cuentaView.btnLimpiar}"
-						value="Limpiar" update="frmCuenta, growl"
-						oncomplete="PF('tblCuenta').filter()"
-						action="#{cuentaView.action_limpiar}" />
-					<p:commandButton id="btnAcivarCliente"
-						binding="#{cuentaView.btnActivar}" value="Activar"
-						update="frmCuenta, growl" oncomplete="PF('tblCuenta').filter()"
-						action="#{cuentaView.action_activar}" />
+						binding="#{consignacionesView.btnRealizarConsignacion}" disabled="false" id="btnCrear"
+						action="#{cuentaView.action_crear}" value="Realizar consignación"
+						update="frmConsignacion, growl" oncomplete="PF('tblConsignacion').filter()" />
+					
 				</h:panelGrid>
 			</p:tab>
 

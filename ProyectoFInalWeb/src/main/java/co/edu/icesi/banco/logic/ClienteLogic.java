@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.icesi.banco.dao.IClientesDAO;
 import co.edu.icesi.banco.modelo.Clientes;
+import co.edu.icesi.banco.modelo.Cuentas;
 
 @Service
 @Scope("singleton")
@@ -134,11 +135,11 @@ public class ClienteLogic implements IClienteLogic {
 		}
 
 		//TODO:
-//		List<Cuentas> cuentas = (List<Cuentas>) cli.getCuentases();
-//		if (cuentas != null && !cuentas.isEmpty()) {
-//			throw new Exception(
-//					"El cliente con id " + entity.getCliId() + " no se puede eliminar ya que tiene cuentas asociadas");
-//		}
+		List<Cuentas> cuentas = (List<Cuentas>) cli.getCuentases();
+		if (cuentas != null && !cuentas.isEmpty()) {
+			throw new Exception(
+					"El cliente con id " + entity.getCliId() + " no se puede eliminar ya que tiene cuentas asociadas");
+		}
 
 		clientesDAO.delete(cli);
 

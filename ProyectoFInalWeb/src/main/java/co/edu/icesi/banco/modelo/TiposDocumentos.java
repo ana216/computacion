@@ -67,7 +67,7 @@ public class TiposDocumentos implements java.io.Serializable {
 		this.tdocHabilitado = tdocHabilitado;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tiposDocumentos")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tiposDocumentos")
 	public Set<Clientes> getClienteses() {
 		return this.clienteses;
 	}
